@@ -1,0 +1,3124 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/ontologie/burkina-faso#"
+         xml:base="http://www.semanticweb.org/ontologie/burkina-faso"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xml="http://www.w3.org/XML/1998/namespace"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologie/burkina-faso">
+        <rdfs:label>Ontologie des Langues et Ethnies du Burkina Faso</rdfs:label>
+        <rdfs:comment>Ontologie complète sur toutes les ethnies du Burkina Faso</rdfs:comment>
+        <owl:versionInfo>2.0</owl:versionInfo>
+    </owl:Ontology>
+    
+    <!-- =============================================== -->
+    <!-- CLASSES PRINCIPALES SELON LE DIAGRAMME UML    -->
+    <!-- =============================================== -->
+    
+    <owl:Class rdf:about="#Ethnie">
+        <rdfs:label>Ethnie</rdfs:label>
+        <rdfs:comment>Communauté humaine partageant une culture, une langue et une histoire commune</rdfs:comment>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Patronyme">
+        <rdfs:label>Patronyme</rdfs:label>
+        <rdfs:comment>Nom de famille transmis héréditairement, caractéristique d'une ethnie</rdfs:comment>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Langue">
+        <rdfs:label>Langue</rdfs:label>
+        <rdfs:comment>Système structuré de communication propre à un groupe humain</rdfs:comment>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Dialecte">
+        <rdfs:label>Dialecte</rdfs:label>
+        <rdfs:comment>Variante géographique ou sociale d'une langue</rdfs:comment>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#FamilleLinguistique">
+        <rdfs:label>Famille Linguistique</rdfs:label>
+        <rdfs:comment>Ensemble de langues apparentées issues d'une langue ancestrale commune</rdfs:comment>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Localite">
+        <rdfs:label>Localité</rdfs:label>
+        <rdfs:comment>Région géographique où une ethnie est établie</rdfs:comment>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#LocalisationEthnie">
+        <rdfs:label>Localisation Ethnie</rdfs:label>
+        <rdfs:comment>Informations sur la répartition d'une ethnie dans une région</rdfs:comment>
+    </owl:Class>
+    
+    <!-- =============================================== -->
+    <!-- ÉNUMÉRATIONS SELON LE DIAGRAMME               -->
+    <!-- =============================================== -->
+    
+    <owl:Class rdf:about="#StatutNationalEnum">
+        <rdfs:label>Statut National Enum</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#MAJORITAIRE"/>
+                    <rdf:Description rdf:about="#MINORITAIRE"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+    <owl:NamedIndividual rdf:about="#MAJORITAIRE">
+        <rdf:type rdf:resource="#StatutNationalEnum"/>
+        <rdfs:label>MAJORITAIRE</rdfs:label>
+    </owl:NamedIndividual>
+    
+    <owl:NamedIndividual rdf:about="#MINORITAIRE">
+        <rdf:type rdf:resource="#StatutNationalEnum"/>
+        <rdfs:label>MINORITAIRE</rdfs:label>
+    </owl:NamedIndividual>
+    
+    <!-- =============================================== -->
+    <!-- PROPRIÉTÉS D'OBJET SELON LE DIAGRAMME         -->
+    <!-- =============================================== -->
+    
+    <owl:ObjectProperty rdf:about="#aPourEthnie">
+        <rdfs:label>aPourEthnie</rdfs:label>
+        <rdfs:domain rdf:resource="#Patronyme"/>
+        <rdfs:range rdf:resource="#Ethnie"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#estEthnieDe">
+        <rdfs:label>estEthnieDe</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="#Patronyme"/>
+        <owl:inverseOf rdf:resource="#aPourEthnie"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#parle">
+        <rdfs:label>parle</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="#Langue"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#estParlePar">
+        <rdfs:label>estParlePar</rdfs:label>
+        <rdfs:domain rdf:resource="#Langue"/>
+        <rdfs:range rdf:resource="#Ethnie"/>
+        <owl:inverseOf rdf:resource="#parle"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#estLocalise">
+        <rdfs:label>estLocalise</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="#Localite"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#estLocaliteDe">
+        <rdfs:label>estLocaliteDe</rdfs:label>
+        <rdfs:domain rdf:resource="#Localite"/>
+        <rdfs:range rdf:resource="#Ethnie"/>
+        <owl:inverseOf rdf:resource="#estLocalise"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#aPourDialecte">
+        <rdfs:label>aPourDialecte</rdfs:label>
+        <rdfs:domain rdf:resource="#Langue"/>
+        <rdfs:range rdf:resource="#Dialecte"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#estDialecteDe">
+        <rdfs:label>estDialecteDe</rdfs:label>
+        <rdfs:domain rdf:resource="#Dialecte"/>
+        <rdfs:range rdf:resource="#Langue"/>
+        <owl:inverseOf rdf:resource="#aPourDialecte"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#aPourFamilleLinguistique">
+        <rdfs:label>aPourFamilleLinguistique</rdfs:label>
+        <rdfs:domain rdf:resource="#Langue"/>
+        <rdfs:range rdf:resource="#FamilleLinguistique"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#estFamilleLinguistiqueDe">
+        <rdfs:label>estFamilleLinguistiqueDe</rdfs:label>
+        <rdfs:domain rdf:resource="#FamilleLinguistique"/>
+        <rdfs:range rdf:resource="#Langue"/>
+        <owl:inverseOf rdf:resource="#aPourFamilleLinguistique"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#statutNational">
+        <rdfs:label>statutNational</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="#StatutNationalEnum"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#statutLocal">
+        <rdfs:label>statutLocal</rdfs:label>
+        <rdfs:domain rdf:resource="#LocalisationEthnie"/>
+        <rdfs:range rdf:resource="#StatutNationalEnum"/>
+    </owl:ObjectProperty>
+    
+    <!-- =============================================== -->
+    <!-- PROPRIÉTÉS DE DONNÉES SELON LE DIAGRAMME      -->
+    <!-- =============================================== -->
+    
+    <owl:DatatypeProperty rdf:about="#nom">
+        <rdfs:label>nom</rdfs:label>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#signification">
+        <rdfs:label>signification</rdfs:label>
+        <rdfs:domain rdf:resource="#Patronyme"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#origine">
+        <rdfs:label>origine</rdfs:label>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#populationEstimee">
+        <rdfs:label>populationEstimee</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#description">
+        <rdfs:label>description</rdfs:label>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#synonyme">
+        <rdfs:label>synonyme</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#tradition">
+        <rdfs:label>tradition</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#pourcentageNational">
+        <rdfs:label>pourcentageNational</rdfs:label>
+        <rdfs:domain rdf:resource="#Ethnie"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#nombreLocuteur">
+        <rdfs:label>nombreLocuteur</rdfs:label>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#latitude">
+        <rdfs:label>latitude</rdfs:label>
+        <rdfs:domain rdf:resource="#Localite"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#longitude">
+        <rdfs:label>longitude</rdfs:label>
+        <rdfs:domain rdf:resource="#Localite"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="#pourcentageRegional">
+        <rdfs:label>pourcentageRegional</rdfs:label>
+        <rdfs:domain rdf:resource="#LocalisationEthnie"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    </owl:DatatypeProperty>
+    
+    <!-- =============================================== -->
+    <!-- FAMILLES LINGUISTIQUES                         -->
+    <!-- =============================================== -->
+    
+    <FamilleLinguistique rdf:about="#NigerCongoGur">
+        <nom>Niger-Congo (Gur/Voltaïque)</nom>
+        <origine>Afrique de l'Ouest</origine>
+        <description>Principale famille linguistique du Burkina Faso, comprenant les langues voltaïques</description>
+    </FamilleLinguistique>
+    
+    <FamilleLinguistique rdf:about="#NigerCongoMande">
+        <nom>Niger-Congo (Mandé)</nom>
+        <origine>Afrique de l'Ouest</origine>
+        <description>Branche mandé de la famille Niger-Congo</description>
+    </FamilleLinguistique>
+    
+    <FamilleLinguistique rdf:about="#AfroAsiatique">
+        <nom>Afro-asiatique</nom>
+        <origine>Afrique du Nord et Moyen-Orient</origine>
+        <description>Famille incluant les langues peules et haoussa</description>
+    </FamilleLinguistique>
+    
+    <FamilleLinguistique rdf:about="#NiloSaharienne">
+        <nom>Nilo-Saharienne</nom>
+        <origine>Afrique centrale et orientale</origine>
+        <description>Famille incluant les langues songhaï et zarma</description>
+    </FamilleLinguistique>
+    
+    <!-- =============================================== -->
+    <!-- RÉGIONS GÉOGRAPHIQUES DU BURKINA FASO         -->
+    <!-- =============================================== -->
+    
+    <Localite rdf:about="#Centre">
+        <nom>Centre</nom>
+        <description>Région administrative comprenant Ouagadougou, territoire principal des Mossi</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.3714</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.5197</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#PlateauCentral">
+        <nom>Plateau Central</nom>
+        <description>Région administrative au centre du pays, territoire historique des Mossi</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.0000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.0000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreNord">
+        <nom>Centre-Nord</nom>
+        <description>Région administrative au nord du Centre, zone de contact entre Mossi et pasteurs</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">13.5000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.5000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreEst">
+        <nom>Centre-Est</nom>
+        <description>Région administrative à l'est du Centre, territoire des Bissa</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.0000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.5000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreOuest">
+        <nom>Centre-Ouest</nom>
+        <description>Région administrative à l'ouest du Centre, zone de diversité ethnique</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.0000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-2.5000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreSud">
+        <nom>Centre-Sud</nom>
+        <description>Région administrative au sud du Centre, territoire des Gurunsi</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11.0000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.0000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Est">
+        <nom>Est</nom>
+        <description>Région administrative orientale, territoire des Gourmantché</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.0000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.5000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#HautsBassins">
+        <nom>Hauts-Bassins</nom>
+        <description>Région administrative occidentale, territoire des Bobo et Sénoufo</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11.1784</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-4.2982</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#BoucleDuMouhoun">
+        <nom>Boucle du Mouhoun</nom>
+        <description>Région administrative nord-ouest, territoire des Bwaba, Marka et Samo</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.5000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-3.0000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Cascades">
+        <nom>Cascades</nom>
+        <description>Région administrative sud-ouest, territoire des Sénoufo et Lobi</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10.5000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-4.5000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#SudOuest">
+        <nom>Sud-Ouest</nom>
+        <description>Région administrative méridionale, territoire des Lobi et Dagara</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10.0000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-3.0000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Sahel">
+        <nom>Sahel</nom>
+        <description>Région administrative septentrionale, territoire des Peuls et Touaregs</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">14.5000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.0000</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Nord">
+        <nom>Nord</nom>
+        <description>Région administrative septentrionale, territoire des Zarma et Songhaï</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">13.5000</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-2.0000</longitude>
+    </Localite>
+    
+    <!-- =============================================== -->
+    <!-- LANGUES PRINCIPALES AVEC DONNÉES RÉELLES      -->
+    <!-- =============================================== -->
+    
+    <Langue rdf:about="#More">
+        <nom>Mooré</nom>
+        <description>Langue principale des Mossi, parlée par plus de 12 millions de locuteurs</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12600000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Fulfuldé">
+        <nom>Fulfuldé</nom>
+        <description>Langue des Peuls, langue afro-asiatique</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1600000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#AfroAsiatique"/>
+    </Langue>
+    
+    <Langue rdf:about="#Gourmanchéma">
+        <nom>Gourmanchéma</nom>
+        <description>Langue des Gourmantché de l'est du Burkina Faso</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1200000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dioula">
+        <nom>Dioula</nom>
+        <description>Langue véhiculaire du commerce, parlée par plusieurs ethnies</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">800000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoMande"/>
+    </Langue>
+    
+    <Langue rdf:about="#Bwamu">
+        <nom>Bwamu</nom>
+        <description>Langue des Bwaba de la boucle du Mouhoun</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">280000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Lyélé">
+        <nom>Lyélé</nom>
+        <description>Langue des Lyélé du centre-sud</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">120000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kassem">
+        <nom>Kassem</nom>
+        <description>Langue des Kasséna du centre-sud</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">140000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dagara">
+        <nom>Dagara</nom>
+        <description>Langue des Dagara du sud-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">235000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Lobi">
+        <nom>Lobi</nom>
+        <description>Langue des Lobi du sud-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">350000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Sénoufo">
+        <nom>Sénoufo</nom>
+        <description>Langue des Sénoufo des Cascades</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">520000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Samo">
+        <nom>Samo</nom>
+        <description>Langue des Samo de la boucle du Mouhoun</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">190000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoMande"/>
+    </Langue>
+    
+    <Langue rdf:about="#Marka">
+        <nom>Marka</nom>
+        <description>Langue des Marka de la boucle du Mouhoun</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">165000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoMande"/>
+    </Langue>
+    
+    <Langue rdf:about="#Zarma">
+        <nom>Zarma</nom>
+        <description>Langue des Zarma du nord</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NiloSaharienne"/>
+    </Langue>
+    
+    <Langue rdf:about="#Songhaï">
+        <nom>Songhaï</nom>
+        <description>Langue des Songhaï du nord</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NiloSaharienne"/>
+    </Langue>
+    
+    <Langue rdf:about="#Haussa">
+        <nom>Haussa</nom>
+        <description>Langue des Haussa du nord et du sahel</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#AfroAsiatique"/>
+    </Langue>
+    
+    <Langue rdf:about="#Tamachek">
+        <nom>Tamachek</nom>
+        <description>Langue des Touaregs du sahel</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#AfroAsiatique"/>
+    </Langue>
+    
+    <!-- =============================================== -->
+    <!-- ETHNIES PRINCIPALES AVEC DONNÉES RÉELLES      -->
+    <!-- =============================================== -->
+    
+    <Ethnie rdf:about="#Mossi">
+        <nom>Mossi</nom>
+        <synonyme>Moosé, Moaga, Moose</synonyme>
+        <description>Ethnie majoritaire du Burkina Faso, descendants du royaume Mossi avec le Moro Naba</description>
+        <tradition>Royaume traditionnel avec hiérarchie nobles-roturiers, agriculture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12600000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">53.7</pourcentageNational>
+        <statutNational rdf:resource="#MAJORITAIRE"/>
+        <parle rdf:resource="#More"/>
+        <estLocalise rdf:resource="#Centre"/>
+        <estLocalise rdf:resource="#PlateauCentral"/>
+        <estLocalise rdf:resource="#CentreNord"/>
+        <estLocalise rdf:resource="#CentreEst"/>
+        <estLocalise rdf:resource="#CentreOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Peuls">
+        <nom>Peuls</nom>
+        <synonyme>Fulbé, Foulbé, Fula, Pular</synonyme>
+        <description>Ethnie d'éleveurs traditionnellement nomades répandue dans tout le Sahel</description>
+        <tradition>Élevage transhumant, tradition islamique, organisation en castes</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1600000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">6.8</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Fulfuldé"/>
+        <estLocalise rdf:resource="#Sahel"/>
+        <estLocalise rdf:resource="#Nord"/>
+        <estLocalise rdf:resource="#Est"/>
+        <estLocalise rdf:resource="#CentreNord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Gurunsi">
+        <nom>Gurunsi</nom>
+        <synonyme>Gourounsi, Grusi</synonyme>
+        <description>Groupe ethnique comprenant plusieurs sous-groupes du centre-sud</description>
+        <tradition>Agriculture, architecture traditionnelle en banco, masques et fétiches</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1400000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">5.9</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+        <estLocalise rdf:resource="#CentreOuest"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Bissa">
+        <nom>Bissa</nom>
+        <description>Ethnie du centre-est parlant une langue gur apparentée au mooré</description>
+        <tradition>Agriculture, commerce, organisation similaire aux Mossi</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1300000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">5.4</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreEst"/>
+        <estLocalise rdf:resource="#Centre"/>
+        <estLocalise rdf:resource="#Est"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Gourmantché">
+        <nom>Gourmantché</nom>
+        <synonyme>Gurma, Gulmanceba, Gulmance</synonyme>
+        <description>Ethnie de l'est descendant d'un ancien royaume</description>
+        <tradition>Royaume traditionnel, agriculture, chefferie traditionnelle</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1200000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">5.2</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Gourmanchéma"/>
+        <estLocalise rdf:resource="#Est"/>
+        <estLocalise rdf:resource="#CentreEst"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Bobo">
+        <nom>Bobo</nom>
+        <synonyme>Bobo-Fing, Bobo-Madaare</synonyme>
+        <description>Ethnie de l'ouest comprenant plusieurs sous-groupes linguistiques</description>
+        <tradition>Agriculture, artisanat, masques traditionnels, forge</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">800000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.4</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+        <estLocalise rdf:resource="#Cascades"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Sénoufo">
+        <nom>Sénoufo</nom>
+        <synonyme>Siéna, Sénar</synonyme>
+        <description>Ethnie du sud-ouest et des cascades</description>
+        <tradition>Agriculture, société initiatique du Poro, sculpture sur bois</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">520000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.2</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Sénoufo"/>
+        <estLocalise rdf:resource="#Cascades"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Lobi">
+        <nom>Lobi</nom>
+        <synonyme>Lobiri, Loron</synonyme>
+        <description>Ethnie du sud-ouest réputée pour ses fortifications traditionnelles</description>
+        <tradition>Architecture défensive, fétiches, résistance à l'islamisation</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">350000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.5</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Lobi"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+        <estLocalise rdf:resource="#Cascades"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Bwaba">
+        <nom>Bwaba</nom>
+        <synonyme>Bwa, Bobo-Bwa</synonyme>
+        <description>Ethnie de la boucle du Mouhoun célèbre pour ses masques</description>
+        <tradition>Masques en fibres et feuilles, agriculture, société clanique</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">280000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.2</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Bwamu"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+        <estLocalise rdf:resource="#CentreOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Dagara">
+        <nom>Dagara</nom>
+        <synonyme>Dagaara, Dagarti</synonyme>
+        <description>Ethnie du sud-ouest apparentée aux Lobi</description>
+        <tradition>Agriculture, rites funéraires, résistance traditionnelle</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">235000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Dagara"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Samo">
+        <nom>Samo</nom>
+        <synonyme>San, Samogo</synonyme>
+        <description>Ethnie mandé de la boucle du Mouhoun</description>
+        <tradition>Commerce, islam, agriculture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">190000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Samo"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Marka">
+        <nom>Marka</nom>
+        <synonyme>Dafing, Mande-Marka</synonyme>
+        <description>Ethnie mandé commerçante de la boucle du Mouhoun</description>
+        <tradition>Commerce transsaharien, islam, organisation marchande</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">165000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Marka"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Kasséna">
+        <nom>Kasséna</nom>
+        <synonyme>Kassem, Kasena</synonyme>
+        <description>Ethnie gurunsi du centre-sud</description>
+        <tradition>Architecture traditionnelle, agriculture, poterie</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">140000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.6</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Kassem"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Lyélé">
+        <nom>Lyélé</nom>
+        <synonyme>Lele, Lyele</synonyme>
+        <description>Ethnie gurunsi du centre-sud</description>
+        <tradition>Agriculture, artisanat, organisation clanique</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">120000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.5</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Lyélé"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+        <estLocalise rdf:resource="#CentreOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Nuni">
+        <nom>Nuni</nom>
+        <synonyme>Nunuma, Nouni</synonyme>
+        <description>Ethnie gurunsi du centre-sud</description>
+        <tradition>Agriculture, organisation clanique, art traditionnel</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">95000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.4</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+        <estLocalise rdf:resource="#CentreOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Dogon">
+        <nom>Dogon</nom>
+        <description>Ethnie du centre connue pour sa cosmogonie complexe</description>
+        <tradition>Cosmogonie, architecture, sculpture, agriculture sur falaises</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">90000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.4</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Centre"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Haussa">
+        <nom>Haussa</nom>
+        <synonyme>Hawsa, Hausa</synonyme>
+        <description>Ethnie commerçante du nord d'origine nigériane</description>
+        <tradition>Commerce, islam, organisation urbaine, artisanat</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Haussa"/>
+        <estLocalise rdf:resource="#Nord"/>
+        <estLocalise rdf:resource="#Sahel"/>
+        <estLocalise rdf:resource="#Centre"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Touareg">
+        <nom>Touareg</nom>
+        <synonyme>Tuareg, Kel Tamachek, Bella</synonyme>
+        <description>Ethnie nomade du sahel avec les Bella (anciens captifs)</description>
+        <tradition>Nomadisme, élevage chameliers, organisation en castes, tifinagh</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Tamachek"/>
+        <estLocalise rdf:resource="#Sahel"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </Ethnie>
+    
+    <!-- =============================================== -->
+    <!-- ETHNIES SUPPLÉMENTAIRES AVEC DONNÉES COMPLÈTES -->
+    <!-- =============================================== -->
+    
+    <Ethnie rdf:about="#Sissala">
+        <nom>Sissala</nom>
+        <synonyme>Sisaala, Sissali</synonyme>
+        <description>Ethnie de la boucle du Mouhoun</description>
+        <tradition>Agriculture, organisation clanique</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">45000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Nankana">
+        <nom>Nankana</nom>
+        <synonyme>Nankani, Nankanse</synonyme>
+        <description>Ethnie gurunsi du centre-sud proche de la frontière ghanéenne</description>
+        <tradition>Agriculture, poterie traditionnelle</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.15</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Toussian">
+        <nom>Toussian</nom>
+        <synonyme>Tusya, Tusia</synonyme>
+        <description>Ethnie du sud-ouest</description>
+        <tradition>Agriculture, artisanat</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.13</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Tiéfo">
+        <nom>Tiéfo</nom>
+        <synonyme>Tiefo, Tyefo</synonyme>
+        <description>Ethnie du sud-ouest</description>
+        <tradition>Agriculture, tradition orale</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.11</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Sambla">
+        <nom>Sambla</nom>
+        <synonyme>Seeku, Sembla</synonyme>
+        <description>Ethnie de la boucle du Mouhoun</description>
+        <tradition>Agriculture, masques traditionnels</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.09</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Koussassé">
+        <nom>Koussassé</nom>
+        <synonyme>Kusasi, Kusaal</synonyme>
+        <description>Ethnie du centre-est proche de la frontière ghanéenne</description>
+        <tradition>Agriculture, élevage</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.085</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreEst"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Karaboro">
+        <nom>Karaboro</nom>
+        <synonyme>Kar, Kara</synonyme>
+        <description>Ethnie du sud-ouest</description>
+        <tradition>Agriculture, pêche</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.077</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Viguié">
+        <nom>Viguié</nom>
+        <synonyme>Viemo, Vigué</synonyme>
+        <description>Ethnie du centre-sud</description>
+        <tradition>Agriculture, artisanat traditionnel</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.064</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Turka">
+        <nom>Turka</nom>
+        <synonyme>Tourka, Turuka</synonyme>
+        <description>Ethnie du sud-ouest</description>
+        <tradition>Agriculture, organisation clanique</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.051</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Birifor">
+        <nom>Birifor</nom>
+        <synonyme>Birifo, Brifore</synonyme>
+        <description>Ethnie du sud-ouest apparentée aux Lobi</description>
+        <tradition>Agriculture, résistance traditionnelle</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.15</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Kurumba">
+        <nom>Kurumba</nom>
+        <description>Ethnie du centre-nord</description>
+        <tradition>Élevage, agriculture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.17</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreNord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Zarma">
+        <nom>Zarma</nom>
+        <synonyme>Djerma, Zerma</synonyme>
+        <description>Ethnie songhaï du nord</description>
+        <tradition>Agriculture, élevage, islam</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.21</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Zarma"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Songhaï">
+        <nom>Songhaï</nom>
+        <synonyme>Sonrhaï, Sonrai</synonyme>
+        <description>Ethnie du nord descendante de l'empire Songhaï</description>
+        <tradition>Commerce, pêche, agriculture, islam</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.17</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <parle rdf:resource="#Songhaï"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Bella">
+        <nom>Bella</nom>
+        <description>Ethnie du sahel, anciens captifs des Touaregs</description>
+        <tradition>Élevage, artisanat, agriculture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.11</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Sahel"/>
+    </Ethnie>
+    
+    <!-- =============================================== -->
+    <!-- LANGUES SUPPLÉMENTAIRES COMPLÈTES             -->
+    <!-- =============================================== -->
+    
+    <Langue rdf:about="#Nuni">
+        <nom>Nuni</nom>
+        <synonyme>Nunuma, Nouni</synonyme>
+        <description>Langue gurunsi du centre-sud</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">95000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Birifor">
+        <nom>Birifor</nom>
+        <synonyme>Birifo, Brifore</synonyme>
+        <description>Langue du sud-ouest apparentée au Lobi</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Sissala">
+        <nom>Sissala</nom>
+        <synonyme>Sisaala, Sissali</synonyme>
+        <description>Langue de la boucle du Mouhoun</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">45000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Nankana">
+        <nom>Nankana</nom>
+        <synonyme>Nankani, Nankanse</synonyme>
+        <description>Langue gurunsi transfrontalière</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Karaboro">
+        <nom>Karaboro</nom>
+        <synonyme>Kar, Kara</synonyme>
+        <description>Langue du sud-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Toussian">
+        <nom>Toussian</nom>
+        <synonyme>Tusya, Tusia</synonyme>
+        <description>Langue du sud-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Tiéfo">
+        <nom>Tiéfo</nom>
+        <synonyme>Tiefo, Tyefo</synonyme>
+        <description>Langue du sud-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Viemo">
+        <nom>Viemo</nom>
+        <synonyme>Viguié, Vigué</synonyme>
+        <description>Langue gurunsi du centre-sud</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Turka">
+        <nom>Turka</nom>
+        <synonyme>Tourka, Turuka</synonyme>
+        <description>Langue du sud-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Wara">
+        <nom>Wara</nom>
+        <synonyme>War, Wari</synonyme>
+        <description>Langue du centre-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Seeku">
+        <nom>Seeku</nom>
+        <synonyme>Sambla, Sembla</synonyme>
+        <description>Langue de la boucle du Mouhoun</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Koussassé">
+        <nom>Koussassé</nom>
+        <synonyme>Kusasi, Kusaal</synonyme>
+        <description>Langue transfrontalière du centre-est</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kalamsé">
+        <nom>Kalamsé</nom>
+        <synonyme>Kalemsé, Kalanse</synonyme>
+        <description>Langue du centre-est</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kaansa">
+        <nom>Kaansa</nom>
+        <synonyme>Gan, Kaane</synonyme>
+        <description>Langue du centre-ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dogosé">
+        <nom>Dogosé</nom>
+        <synonyme>Dogoso, Doghossié</synonyme>
+        <description>Langue du centre</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">90000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kurumfé">
+        <nom>Kurumfé</nom>
+        <description>Langue des Kurumba du centre-nord</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoGur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Bambara">
+        <nom>Bambara</nom>
+        <description>Langue mandé parlée dans les Hauts-Bassins</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoMande"/>
+    </Langue>
+    
+    <Langue rdf:about="#Bobo">
+        <nom>Bobo</nom>
+        <synonyme>Bobo-Madaare, Bobo-Fing</synonyme>
+        <description>Langues des Bobo avec plusieurs dialectes</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">800000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongoMande"/>
+    </Langue>
+    
+    <!-- =============================================== -->
+    <!-- DIALECTES PRINCIPAUX                           -->
+    <!-- =============================================== -->
+    
+    <Dialecte rdf:about="#MoreOuagadougou">
+        <nom>Mooré de Ouagadougou</nom>
+        <description>Dialecte standard parlé dans la capitale</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3000000</nombreLocuteur>
+        <estDialecteDe rdf:resource="#More"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MoreYatenga">
+        <nom>Mooré du Yatenga</nom>
+        <description>Dialecte du nord mossi</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2000000</nombreLocuteur>
+        <estDialecteDe rdf:resource="#More"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#DioulaBobo">
+        <nom>Dioula de Bobo-Dioulasso</nom>
+        <description>Dialecte commercial de l'ouest</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">300000</nombreLocuteur>
+        <estDialecteDe rdf:resource="#Dioula"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#FulfuldéSahel">
+        <nom>Fulfuldé du Sahel</nom>
+        <description>Dialecte peul du nord</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">800000</nombreLocuteur>
+        <estDialecteDe rdf:resource="#Fulfuldé"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#BoboMadaare">
+        <nom>Bobo-Madaare</nom>
+        <description>Principal dialecte bobo</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">500000</nombreLocuteur>
+        <estDialecteDe rdf:resource="#Bobo"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#BoboFing">
+        <nom>Bobo-Fing</nom>
+        <description>Dialecte bobo du nord</description>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">300000</nombreLocuteur>
+        <estDialecteDe rdf:resource="#Bobo"/>
+    </Dialecte>
+
+    <!-- =============================================== -->
+    <!-- PATRONYMES TYPIQUES PAR ETHNIE                 -->
+    <!-- =============================================== -->
+    
+    <Patronyme rdf:about="#Ouedraogo">
+        <nom>Ouédraogo</nom>
+        <signification>Fils de cheval ou descendant royal</signification>
+        <origine>Lignée royale mossi, nom du fondateur de Tenkodogo</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sawadogo">
+        <nom>Sawadogo</nom>
+        <signification>Maître de la terre, gardien du terroir</signification>
+        <origine>Lignée des tengansob (maîtres de la terre) chez les Mossi</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kaboré">
+        <nom>Kaboré</nom>
+        <signification>Celui qui fait parler, porte-parole</signification>
+        <origine>Tradition mossi, fonction de ministre royal</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Diallo">
+        <nom>Diallo</nom>
+        <signification>Descendant noble, celui qui est élevé</signification>
+        <origine>Lignée peule aristocratique répandue au Sahel</origine>
+        <aPourEthnie rdf:resource="#Peuls"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Barry">
+        <nom>Barry</nom>
+        <signification>Guerrier, celui qui combat</signification>
+        <origine>Caste des guerriers peuls</origine>
+        <aPourEthnie rdf:resource="#Peuls"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Traoré">
+        <nom>Traoré</nom>
+        <signification>Descendant du lion, lignée noble</signification>
+        <origine>Patronyme mandé très répandu chez plusieurs ethnies</origine>
+        <aPourEthnie rdf:resource="#Bobo"/>
+        <aPourEthnie rdf:resource="#Sénoufo"/>
+        <aPourEthnie rdf:resource="#Marka"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Coulibaly">
+        <nom>Coulibaly</nom>
+        <signification>Celui qui n'a pas de pirogue, terrien</signification>
+        <origine>Patronyme mandé répandu chez les Bobo et Sénoufo</origine>
+        <aPourEthnie rdf:resource="#Bobo"/>
+        <aPourEthnie rdf:resource="#Sénoufo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Ouattara">
+        <nom>Ouattara</nom>
+        <signification>Descendant de Wattara, lignée commerçante</signification>
+        <origine>Lignée de commerçants dioula-mandé</origine>
+        <aPourEthnie rdf:resource="#Bobo"/>
+        <aPourEthnie rdf:resource="#Sénoufo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sankara">
+        <nom>Sankara</nom>
+        <signification>Celui qui donne la joie</signification>
+        <origine>Patronyme mossi de la région de Yako</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Compaoré">
+        <nom>Compaoré</nom>
+        <signification>Celui qui rassemble les hommes</signification>
+        <origine>Patronyme mossi du centre</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Lompo">
+        <nom>Lompo</nom>
+        <signification>Chef, celui qui commande</signification>
+        <origine>Patronyme gurunsi répandu chez les Kasséna</origine>
+        <aPourEthnie rdf:resource="#Kasséna"/>
+        <aPourEthnie rdf:resource="#Gurunsi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tiendrebéogo">
+        <nom>Tiendrébéogo</nom>
+        <signification>Dieu merci, remerciement divin</signification>
+        <origine>Patronyme mossi exprimant la gratitude</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+
+    <!-- =============================================== -->
+    <!-- PATRONYMES SUPPLÉMENTAIRES POUR TOUTES LES ETHNIES -->
+    
+    <Patronyme rdf:about="#Yameogo">
+        <nom>Yaméogo</nom>
+        <signification>Celui qui apporte la paix</signification>
+        <origine>Patronyme mossi du centre</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Zongo">
+        <nom>Zongo</nom>
+        <signification>Quartier des étrangers, accueil</signification>
+        <origine>Patronyme mossi lié à l'hospitalité</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kabore">
+        <nom>Kaboré</nom>
+        <signification>Celui qui fait parler, porte-parole</signification>
+        <origine>Fonction de ministre dans la cour royale mossi</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Barro">
+        <nom>Barro</nom>
+        <signification>Celui qui enseigne</signification>
+        <origine>Caste des enseignants/griots peuls</origine>
+        <aPourEthnie rdf:resource="#Peuls"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Dicko">
+        <nom>Dicko</nom>
+        <signification>Descendant du savoir</signification>
+        <origine>Lignée peule érudite</origine>
+        <aPourEthnie rdf:resource="#Peuls"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sangare">
+        <nom>Sangaré</nom>
+        <signification>Descendant du forgeron</signification>
+        <origine>Caste des forgerons chez les Peuls</origine>
+        <aPourEthnie rdf:resource="#Peuls"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sidibe">
+        <nom>Sidibé</nom>
+        <signification>Celui qui vient de loin</signification>
+        <origine>Patronyme mandé répandu chez les Bobo</origine>
+        <aPourEthnie rdf:resource="#Bobo"/>
+        <aPourEthnie rdf:resource="#Marka"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kone">
+        <nom>Koné</nom>
+        <signification>Unique, singulier</signification>
+        <origine>Patronyme mandé très répandu</origine>
+        <aPourEthnie rdf:resource="#Bobo"/>
+        <aPourEthnie rdf:resource="#Sénoufo"/>
+        <aPourEthnie rdf:resource="#Marka"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sanou">
+        <nom>Sanou</nom>
+        <signification>Celui qui porte bonheur</signification>
+        <origine>Patronyme bobo traditionnel</origine>
+        <aPourEthnie rdf:resource="#Bobo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tapsoba">
+        <nom>Tapsoba</nom>
+        <signification>Celui qui vient en aide</signification>
+        <origine>Patronyme mossi du centre-ouest</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sorgho">
+        <nom>Sorgho</nom>
+        <signification>Céréale de vie, nourriture</signification>
+        <origine>Patronyme gurunsi lié à l'agriculture</origine>
+        <aPourEthnie rdf:resource="#Gurunsi"/>
+        <aPourEthnie rdf:resource="#Kasséna"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Dakuyo">
+        <nom>Dakuyo</nom>
+        <signification>Fils de la maison</signification>
+        <origine>Patronyme lobi du sud-ouest</origine>
+        <aPourEthnie rdf:resource="#Lobi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Botoni">
+        <nom>Botoni</nom>
+        <signification>Celui qui guide</signification>
+        <origine>Patronyme gurunsi du centre-sud</origine>
+        <aPourEthnie rdf:resource="#Gurunsi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Yaro">
+        <nom>Yaro</nom>
+        <signification>Garçon, jeune homme</signification>
+        <origine>Patronyme peul répandu</origine>
+        <aPourEthnie rdf:resource="#Peuls"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Ouoba">
+        <nom>Ouoba</nom>
+        <signification>Celui qui vient de Dieu</signification>
+        <origine>Patronyme mossi du plateau central</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Ilboudo">
+        <nom>Ilboudo</nom>
+        <signification>Dieu a donné</signification>
+        <origine>Patronyme mossi exprimant la reconnaissance divine</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Nacanabo">
+        <nom>Nacanabo</nom>
+        <signification>Dieu seul sait</signification>
+        <origine>Patronyme mossi philosophique</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kabore">
+        <nom>Kaboré</nom>
+        <signification>Celui qui parle pour le roi</signification>
+        <origine>Fonction de porte-parole royal mossi</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sana">
+        <nom>Sana</nom>
+        <signification>Celui qui apaise</signification>
+        <origine>Patronyme samo de la boucle du Mouhoun</origine>
+        <aPourEthnie rdf:resource="#Samo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Konate">
+        <nom>Konaté</nom>
+        <signification>Descendant de Kona</signification>
+        <origine>Patronyme mandé ancien</origine>
+        <aPourEthnie rdf:resource="#Marka"/>
+        <aPourEthnie rdf:resource="#Samo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kiemde">
+        <nom>Kiemde</nom>
+        <signification>Celui qui fait le bien</signification>
+        <origine>Patronyme gurunsi du centre-sud</origine>
+        <aPourEthnie rdf:resource="#Gurunsi"/>
+        <aPourEthnie rdf:resource="#Lyélé"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tiendrebeogo">
+        <nom>Tiendrébéogo</nom>
+        <signification>Remerciement à Dieu</signification>
+        <origine>Patronyme mossi exprimant la gratitude</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+
+    <!-- =============================================== -->
+    <!-- DIALECTES EXHAUSTIFS PAR LANGUE               -->
+    <!-- =============================================== -->
+    
+    <!-- Dialectes du Mooré -->
+    <Dialecte rdf:about="#MooreOuagadougou">
+        <nom>Mooré de Ouagadougou</nom>
+        <description>Dialecte central du mooré, le plus prestigieux</description>
+        <aPourLangue rdf:resource="#More"/>
+        <aPourLocalisation rdf:resource="#Centre"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MooreOuahigouya">
+        <nom>Mooré de Ouahigouya (Yaadre)</nom>
+        <description>Dialecte du mooré parlé dans le nord</description>
+        <aPourLangue rdf:resource="#More"/>
+        <aPourLocalisation rdf:resource="#Nord"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MooreKaya">
+        <nom>Mooré de Kaya</nom>
+        <description>Dialecte du mooré de la région centre-nord</description>
+        <aPourLangue rdf:resource="#More"/>
+        <aPourLocalisation rdf:resource="#CentreNord"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MooreKoudougou">
+        <nom>Mooré de Koudougou (Taaolonde)</nom>
+        <description>Dialecte du mooré de l'ouest</description>
+        <aPourLangue rdf:resource="#More"/>
+        <aPourLocalisation rdf:resource="#CentreOuest"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Dioula -->
+    <Dialecte rdf:about="#DioulaBobo">
+        <nom>Dioula de Bobo-Dioulasso</nom>
+        <description>Dialecte commercial principal</description>
+        <aPourLangue rdf:resource="#Dioula"/>
+        <aPourLocalisation rdf:resource="#HautsBassins"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#DioulaKong">
+        <nom>Dioula de Kong</nom>
+        <description>Dialecte traditionnel du commerce</description>
+        <aPourLangue rdf:resource="#Dioula"/>
+        <aPourLocalisation rdf:resource="#Cascades"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Fulfuldé -->
+    <Dialecte rdf:about="#FulfuldeDori">
+        <nom>Fulfuldé de Dori</nom>
+        <description>Dialecte peul du Sahel</description>
+        <aPourLangue rdf:resource="#Fulfuldé"/>
+        <aPourLocalisation rdf:resource="#Sahel"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#FulfuldeDjibo">
+        <nom>Fulfuldé de Djibo</nom>
+        <description>Dialecte peul du nord</description>
+        <aPourLangue rdf:resource="#Fulfuldé"/>
+        <aPourLocalisation rdf:resource="#Sahel"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Gourmantché -->
+    <Dialecte rdf:about="#GourmantcheNord">
+        <nom>Gourmantché du Nord</nom>
+        <description>Dialecte septentrional</description>
+        <aPourLangue rdf:resource="#Gourmantché"/>
+        <aPourLocalisation rdf:resource="#Est"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#GourmantcheCentre">
+        <nom>Gourmantché central</nom>
+        <description>Dialecte central prestigieux</description>
+        <aPourLangue rdf:resource="#Gourmantché"/>
+        <aPourLocalisation rdf:resource="#Est"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#GourmantcheSud">
+        <nom>Gourmantché du Sud</nom>
+        <description>Dialecte méridional</description>
+        <aPourLangue rdf:resource="#Gourmantché"/>
+        <aPourLocalisation rdf:resource="#Est"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Bissa -->
+    <Dialecte rdf:about="#BissaBoulsa">
+        <nom>Bissa de Boulsa</nom>
+        <description>Dialecte du centre-est</description>
+        <aPourLangue rdf:resource="#Bissa"/>
+        <aPourLocalisation rdf:resource="#CentreEst"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#BissaTenkodogo">
+        <nom>Bissa de Tenkodogo</nom>
+        <description>Dialecte principal du bissa</description>
+        <aPourLangue rdf:resource="#Bissa"/>
+        <aPourLocalisation rdf:resource="#CentreEst"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Sénoufo -->
+    <Dialecte rdf:about="#SenoufoSupyire">
+        <nom>Sénoufo Supyire</nom>
+        <description>Dialecte sénoufo occidental</description>
+        <aPourLangue rdf:resource="#Sénoufo"/>
+        <aPourLocalisation rdf:resource="#Cascades"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#SenoufoKaraboro">
+        <nom>Sénoufo Karaboro</nom>
+        <description>Dialecte sénoufo du sud-ouest</description>
+        <aPourLangue rdf:resource="#Sénoufo"/>
+        <aPourLocalisation rdf:resource="#SudOuest"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Bobo -->
+    <Dialecte rdf:about="#BoboMadare">
+        <nom>Bobo Madare</nom>
+        <description>Dialecte bobo principal</description>
+        <aPourLangue rdf:resource="#Bobo"/>
+        <aPourLocalisation rdf:resource="#HautsBassins"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#BoboFing">
+        <nom>Bobo Fing</nom>
+        <description>Dialecte bobo du nord</description>
+        <aPourLangue rdf:resource="#Bobo"/>
+        <aPourLocalisation rdf:resource="#HautsBassins"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Dagara -->
+    <Dialecte rdf:about="#DagaraLobiri">
+        <nom>Dagara Lobiri</nom>
+        <description>Dialecte dagara-lobiri</description>
+        <aPourLangue rdf:resource="#Dagara"/>
+        <aPourLocalisation rdf:resource="#SudOuest"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#DagaraWule">
+        <nom>Dagara Wule</nom>
+        <description>Dialecte dagara occidental</description>
+        <aPourLangue rdf:resource="#Dagara"/>
+        <aPourLocalisation rdf:resource="#SudOuest"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Lobi -->
+    <Dialecte rdf:about="#LobiGaoua">
+        <nom>Lobi de Gaoua</nom>
+        <description>Dialecte lobi principal</description>
+        <aPourLangue rdf:resource="#Lobi"/>
+        <aPourLocalisation rdf:resource="#SudOuest"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#LobiBouna">
+        <nom>Lobi de Bouna</nom>
+        <description>Dialecte lobi oriental</description>
+        <aPourLangue rdf:resource="#Lobi"/>
+        <aPourLocalisation rdf:resource="#SudOuest"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Samo -->
+    <Dialecte rdf:about="#SamoTougan">
+        <nom>Samo de Tougan</nom>
+        <description>Dialecte samo principal</description>
+        <aPourLangue rdf:resource="#Samo"/>
+        <aPourLocalisation rdf:resource="#BoucleDuMouhoun"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#SamoMaya">
+        <nom>Samo de Maya</nom>
+        <description>Dialecte samo occidental</description>
+        <aPourLangue rdf:resource="#Samo"/>
+        <aPourLocalisation rdf:resource="#BoucleDuMouhoun"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Marka -->
+    <Dialecte rdf:about="#MarkaMarkakan">
+        <nom>Marka Markakan</nom>
+        <description>Dialecte marka du nord</description>
+        <aPourLangue rdf:resource="#Marka"/>
+        <aPourLocalisation rdf:resource="#BoucleDuMouhoun"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MarkaMeekakan">
+        <nom>Marka Meekakan</nom>
+        <description>Dialecte marka du sud</description>
+        <aPourLangue rdf:resource="#Marka"/>
+        <aPourLocalisation rdf:resource="#BoucleDuMouhoun"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Lyélé -->
+    <Dialecte rdf:about="#LyeleReo">
+        <nom>Lyélé de Réo</nom>
+        <description>Dialecte lyélé principal</description>
+        <aPourLangue rdf:resource="#Lyélé"/>
+        <aPourLocalisation rdf:resource="#CentreOuest"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Nuni -->
+    <Dialecte rdf:about="#NuniPo">
+        <nom>Nuni Po</nom>
+        <description>Dialecte nuni principal</description>
+        <aPourLangue rdf:resource="#Nuni"/>
+        <aPourLocalisation rdf:resource="#CentreSud"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#NuniSala">
+        <nom>Nuni Sala</nom>
+        <description>Dialecte nuni occidental</description>
+        <aPourLangue rdf:resource="#Nuni"/>
+        <aPourLocalisation rdf:resource="#CentreSud"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Bwamu -->
+    <Dialecte rdf:about="#BwamuLaa">
+        <nom>Láá Láá Bwamu</nom>
+        <description>Dialecte bwamu principal</description>
+        <aPourLangue rdf:resource="#Bwamu"/>
+        <aPourLocalisation rdf:resource="#BoucleDuMouhoun"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#BwamuCwi">
+        <nom>Cwi Bwamu</nom>
+        <description>Dialecte bwamu occidental</description>
+        <aPourLangue rdf:resource="#Bwamu"/>
+        <aPourLocalisation rdf:resource="#BoucleDuMouhoun"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Karaboro -->
+    <Dialecte rdf:about="#KaraboroOuest">
+        <nom>Karaboro occidental</nom>
+        <description>Dialecte karaboro de l'ouest</description>
+        <aPourLangue rdf:resource="#KaraboroOccidental"/>
+        <aPourLocalisation rdf:resource="#Cascades"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#KaraboroEst">
+        <nom>Karaboro oriental</nom>
+        <description>Dialecte karaboro de l'est</description>
+        <aPourLangue rdf:resource="#KaraboroOriental"/>
+        <aPourLocalisation rdf:resource="#Cascades"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Kasena -->
+    <Dialecte rdf:about="#KasenaKassem">
+        <nom>Kasena-Kassem</nom>
+        <description>Dialecte kasena principal</description>
+        <aPourLangue rdf:resource="#Kasena"/>
+        <aPourLocalisation rdf:resource="#CentreSud"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Songhaï -->
+    <Dialecte rdf:about="#SonghaiDendï">
+        <nom>Songhaï Dendï</nom>
+        <description>Dialecte songhaï occidental</description>
+        <aPourLangue rdf:resource="#Songhaï"/>
+        <aPourLocalisation rdf:resource="#Sahel"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#SonghaiKoyra">
+        <nom>Songhaï Koyra</nom>
+        <description>Dialecte songhaï du fleuve</description>
+        <aPourLangue rdf:resource="#Songhaï"/>
+        <aPourLocalisation rdf:resource="#Sahel"/>
+    </Dialecte>
+
+    <!-- =============================================== -->
+    <!-- LES 13 RÉGIONS GÉOGRAPHIQUES COMPLÈTES        -->
+    <!-- =============================================== -->
+    
+    <Localite rdf:about="#Centre">
+        <nom>Centre</nom>
+        <description>Région du centre, chef-lieu Ouagadougou (capitale)</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.3714</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.5197</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#PlateauCentral">
+        <nom>Plateau Central</nom>
+        <description>Région du plateau central, chef-lieu Ziniaré</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.5833</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.4167</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreNord">
+        <nom>Centre-Nord</nom>
+        <description>Région du centre-nord, chef-lieu Kaya</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">13.0833</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.0833</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreEst">
+        <nom>Centre-Est</nom>
+        <description>Région du centre-est, chef-lieu Tenkodogo</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11.7833</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-0.3667</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreOuest">
+        <nom>Centre-Ouest</nom>
+        <description>Région du centre-ouest, chef-lieu Koudougou</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.2500</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-2.3667</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#CentreSud">
+        <nom>Centre-Sud</nom>
+        <description>Région du centre-sud, chef-lieu Manga</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11.6667</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.0667</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Est">
+        <nom>Est</nom>
+        <description>Région de l'est, chef-lieu Fada N'Gourma</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.0667</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3500</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#HautsBassins">
+        <nom>Hauts-Bassins</nom>
+        <description>Région de l'ouest, chef-lieu Bobo-Dioulasso</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11.1833</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-4.2833</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#BoucleDuMouhoun">
+        <nom>Boucle du Mouhoun</nom>
+        <description>Région de la boucle du Mouhoun, chef-lieu Dédougou</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.4667</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-3.4833</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Cascades">
+        <nom>Cascades</nom>
+        <description>Région des cascades, chef-lieu Banfora</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10.6333</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-4.7500</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#SudOuest">
+        <nom>Sud-Ouest</nom>
+        <description>Région du sud-ouest, chef-lieu Gaoua</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10.3333</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-3.1667</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Sahel">
+        <nom>Sahel</nom>
+        <description>Région du sahel (extrême nord), chef-lieu Dori</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">14.0333</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-0.0333</longitude>
+    </Localite>
+    
+    <Localite rdf:about="#Nord">
+        <nom>Nord</nom>
+        <description>Région du nord, chef-lieu Ouahigouya</description>
+        <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">13.5833</latitude>
+        <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-2.4167</longitude>
+    </Localite>
+    
+    <!-- =============================================== -->
+    <!-- LOCALISATIONS ETHNIQUES COMPLÈTES             -->
+    <!-- =============================================== -->
+    
+    <LocalisationEthnie rdf:about="#MossiCentre">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">75.0</pourcentageRegional>
+        <description>Concentration majoritaire des Mossi dans la région Centre</description>
+        <aPourEthnie rdf:resource="#Mossi"/>
+        <estLocalise rdf:resource="#Centre"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#MossiPlateauCentral">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">85.0</pourcentageRegional>
+        <description>Forte concentration mossi au Plateau Central</description>
+        <aPourEthnie rdf:resource="#Mossi"/>
+        <estLocalise rdf:resource="#PlateauCentral"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#MossiCentreNord">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">70.0</pourcentageRegional>
+        <description>Présence importante mossi au Centre-Nord</description>
+        <aPourEthnie rdf:resource="#Mossi"/>
+        <estLocalise rdf:resource="#CentreNord"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#PeulsSahel">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">45.0</pourcentageRegional>
+        <description>Concentration importante des Peuls au Sahel</description>
+        <aPourEthnie rdf:resource="#Peuls"/>
+        <estLocalise rdf:resource="#Sahel"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#PeulsNord">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">35.0</pourcentageRegional>
+        <description>Forte présence peule au Nord</description>
+        <aPourEthnie rdf:resource="#Peuls"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#BoboHautsBassins">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">55.0</pourcentageRegional>
+        <description>Concentration principale des Bobo aux Hauts-Bassins</description>
+        <aPourEthnie rdf:resource="#Bobo"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#SenoufosCascades">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">40.0</pourcentageRegional>
+        <description>Présence sénoufo aux Cascades</description>
+        <aPourEthnie rdf:resource="#Sénoufo"/>
+        <estLocalise rdf:resource="#Cascades"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#LobiSudOuest">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">50.0</pourcentageRegional>
+        <description>Territoire traditionnel lobi au Sud-Ouest</description>
+        <aPourEthnie rdf:resource="#Lobi"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#DagaraSudOuest">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">25.0</pourcentageRegional>
+        <description>Présence dagara au Sud-Ouest</description>
+        <aPourEthnie rdf:resource="#Dagara"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#GourmantchéEst">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">65.0</pourcentageRegional>
+        <description>Territoire principal gourmantché à l'Est</description>
+        <aPourEthnie rdf:resource="#Gourmantché"/>
+        <estLocalise rdf:resource="#Est"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#GurunsiCentreSud">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">45.0</pourcentageRegional>
+        <description>Concentration gurunsi au Centre-Sud</description>
+        <aPourEthnie rdf:resource="#Gurunsi"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#BwabaBoucleDuMouhoun">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">40.0</pourcentageRegional>
+        <description>Présence bwaba à la Boucle du Mouhoun</description>
+        <aPourEthnie rdf:resource="#Bwaba"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </LocalisationEthnie>
+    
+    <LocalisationEthnie rdf:about="#TouaregSahel">
+        <pourcentageRegional rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">15.0</pourcentageRegional>
+        <description>Présence touarègue nomade au Sahel</description>
+        <aPourEthnie rdf:resource="#Touareg"/>
+        <estLocalise rdf:resource="#Sahel"/>
+    </LocalisationEthnie>
+
+    <!-- ETHNIES SUPPLÉMENTAIRES - PARTIE 2 (40+ nouvelles ethnies) -->
+    
+    <Ethnie rdf:about="#Senufo">
+        <nom>Sénoufo</nom>
+        <synonyme>Siena, Syenara</synonyme>
+        <description>Groupe ethnique du sud-ouest, agriculteurs</description>
+        <tradition>Agriculture, sculptures sur bois, masques sacrés</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">172884</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.23</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Cascades"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Nuni">
+        <nom>Nuni</nom>
+        <synonyme>Nounouma, Nuna</synonyme>
+        <description>Ethnie gurunsi du centre-sud</description>
+        <tradition>Agriculture, organisation sociale hiérarchisée</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">146581</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.05</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Dafing">
+        <nom>Dafing</nom>
+        <synonyme>Marka, Soninké</synonyme>
+        <description>Commerçants d'origine mandé</description>
+        <tradition>Commerce, Islam, artisanat</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">134681</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.96</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Tamachek">
+        <nom>Tamachèque</nom>
+        <synonyme>Touareg, Bella</synonyme>
+        <description>Nomades et semi-nomades du Sahel</description>
+        <tradition>Élevage, nomadisme, artisanat du cuir</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">122019</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.87</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Sahel"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Kasena">
+        <nom>Kasena</nom>
+        <synonyme>Kassem, Kassene</synonyme>
+        <description>Ethnie gurunsi du centre-sud</description>
+        <tradition>Agriculture, architecture traditionnelle</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">83602</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.60</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Gouin">
+        <nom>Gouin</nom>
+        <synonyme>Cerma, Kirma</synonyme>
+        <description>Ethnie de l'ouest proche des Bobo</description>
+        <tradition>Agriculture, vannerie</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">51908</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.37</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Songhai">
+        <nom>Songhaï</nom>
+        <synonyme>Sonrai, Songhay</synonyme>
+        <description>Ethnie du nord, descendants de l'empire Songhaï</description>
+        <tradition>Commerce, pêche, agriculture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">43192</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.31</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Sahel"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Gurunsi">
+        <nom>Gourounsi</nom>
+        <synonyme>Grusi, Kassena-Nankana</synonyme>
+        <description>Confédération d'ethnies du centre-sud</description>
+        <tradition>Agriculture, architecture en banco</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40298</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.29</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Dogon">
+        <nom>Dogon</nom>
+        <synonyme>Kaado, Dogom</synonyme>
+        <description>Ethnie des falaises, venus du Mali</description>
+        <tradition>Astronomie, cosmogonie, sculpture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36551</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.26</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Siamou">
+        <nom>Siamou</nom>
+        <synonyme>Siamo, Seme</synonyme>
+        <description>Ethnie isolée linguistiquement</description>
+        <tradition>Agriculture, langue isolée</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17441</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.12</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Seenku">
+        <nom>Seenku</nom>
+        <synonyme>Sambla, Sembla</synonyme>
+        <description>Groupe mandé de l'ouest</description>
+        <tradition>Agriculture, commerce</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16023</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.11</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Kusaal">
+        <nom>Kusaal</nom>
+        <synonyme>Koussassé</synonyme>
+        <description>Ethnie frontalière avec le Ghana</description>
+        <tradition>Agriculture, commerce transfrontalier</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12786</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.09</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Winye">
+        <nom>Winyé</nom>
+        <synonyme>Ko, Kwo</synonyme>
+        <description>Ethnie du centre-ouest</description>
+        <tradition>Agriculture, poterie</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10301</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.07</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Hausa">
+        <nom>Haoussa</nom>
+        <synonyme>Hausa</synonyme>
+        <description>Commerçants d'origine nigériane</description>
+        <tradition>Commerce, Islam, artisanat</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9673</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.07</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Centre"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Zarma">
+        <nom>Zarma</nom>
+        <synonyme>Djerma, Zabarma</synonyme>
+        <description>Ethnie nigérienne présente au nord</description>
+        <tradition>Agriculture, élevage</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9116</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.07</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Sahel"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Minianka">
+        <nom>Minianka</nom>
+        <synonyme>Mamara</synonyme>
+        <description>Groupe sénoufo du sud</description>
+        <tradition>Agriculture, sculpture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2684</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.02</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Cascades"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Dagara">
+        <nom>Dagara</nom>
+        <synonyme>Dagaari, Dagarti</synonyme>
+        <description>Ethnie du sud-ouest proche du Ghana</description>
+        <tradition>Agriculture, rites initiatiques</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">246724</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.76</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Bwamu">
+        <nom>Bwamu</nom>
+        <synonyme>Bwamou, Bobo-Wule</synonyme>
+        <description>Ethnie apparentée aux Bobo</description>
+        <tradition>Agriculture, tissage</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">268001</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.91</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Lyele">
+        <nom>Lyélé</nom>
+        <synonyme>Lele</synonyme>
+        <description>Ethnie gurunsi du centre-ouest</description>
+        <tradition>Agriculture, poterie traditionnelle</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">212531</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.52</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreOuest"/>
+    </Ethnie>
+
+    <!-- ETHNIES NOUVELLES BASÉES SUR LES RECHERCHES -->
+    
+    <Ethnie rdf:about="#Jalkunan">
+        <nom>Jalkunan</nom>
+        <synonyme>Dyala, Jalkuna</synonyme>
+        <description>Ethnie mandé en voie de disparition</description>
+        <tradition>Langue menacée, agriculture</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">500</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.002</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Birifor">
+        <nom>Birifor</nom>
+        <synonyme>Birifour</synonyme>
+        <description>Ethnie du sud-ouest</description>
+        <tradition>Agriculture, organisation clanique</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">108000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.77</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Bolon">
+        <nom>Bolon</nom>
+        <synonyme>Bolo</synonyme>
+        <description>Groupe mandé de l'ouest</description>
+        <tradition>Agriculture, commerce</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.12</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Koromfe">
+        <nom>Koromfé</nom>
+        <synonyme>Koromba</synonyme>
+        <description>Ethnie gur du nord</description>
+        <tradition>Agriculture, élevage</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">151000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.08</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Nord"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Malba">
+        <nom>Malba</nom>
+        <synonyme>Malbe</synonyme>
+        <description>Sous-groupe mossi</description>
+        <tradition>Agriculture, hiérarchie sociale</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.25</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Centre"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Moba">
+        <nom>Moba</nom>
+        <synonyme>Moab</synonyme>
+        <description>Ethnie de l'est, proche du Togo</description>
+        <tradition>Agriculture, rites ancestraux</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1800</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.013</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Est"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Natioro">
+        <nom>Natioro</nom>
+        <synonyme>Natyoro</synonyme>
+        <description>Ethnie à langue isolée</description>
+        <tradition>Agriculture, langue unique</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2400</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.017</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Pana">
+        <nom>Pana</nom>
+        <synonyme>Sama</synonyme>
+        <description>Ethnie du sud-ouest en danger</description>
+        <tradition>Agriculture, langue menacée</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.036</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Cerma">
+        <nom>Cerma</nom>
+        <synonyme>Kirma</synonyme>
+        <description>Ethnie de l'ouest apparentée aux Bobo</description>
+        <tradition>Agriculture, poterie</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">61000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.44</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#HautsBassins"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Karaboro">
+        <nom>Karaboro</nom>
+        <synonyme>Kar</synonyme>
+        <description>Ethnie sénoufo du sud-ouest</description>
+        <tradition>Agriculture, masques rituels</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65200</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.47</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Cascades"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Turka">
+        <nom>Turka</nom>
+        <synonyme>Tourka</synonyme>
+        <description>Ethnie sénoufo de l'ouest</description>
+        <tradition>Agriculture, art sculptural</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">37000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.26</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#Cascades"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Viemo">
+        <nom>Viemo</nom>
+        <synonyme>Vige</synonyme>
+        <description>Ethnie du centre-sud</description>
+        <tradition>Agriculture, organisation sociale</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.057</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Wara">
+        <nom>Wara</nom>
+        <synonyme>Ouara</synonyme>
+        <description>Ethnie isolée linguistiquement</description>
+        <tradition>Agriculture, langue unique en danger</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4500</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.032</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Gan">
+        <nom>Gan</nom>
+        <synonyme>Kaansa</synonyme>
+        <description>Ethnie gurunsi du centre-sud</description>
+        <tradition>Agriculture, poterie</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.043</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#CentreSud"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Khe">
+        <nom>Khe</nom>
+        <synonyme>Kheso</synonyme>
+        <description>Petite ethnie en voie de disparition</description>
+        <tradition>Agriculture, langue menacée</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1300</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.009</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#SudOuest"/>
+    </Ethnie>
+    
+    <Ethnie rdf:about="#Khisa">
+        <nom>Khisa</nom>
+        <synonyme>Komono</synonyme>
+        <description>Ethnie en danger linguistique</description>
+        <tradition>Agriculture, langue menacée</tradition>
+        <populationEstimee rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3000</populationEstimee>
+        <pourcentageNational rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.021</pourcentageNational>
+        <statutNational rdf:resource="#MINORITAIRE"/>
+        <estLocalise rdf:resource="#BoucleDuMouhoun"/>
+    </Ethnie>
+
+    <!-- =============================================== -->
+    <!-- LANGUES SUPPLÉMENTAIRES EXHAUSTIVES (40+)    -->
+    <!-- =============================================== -->
+    
+    <Langue rdf:about="#Bambara">
+        <nom>Bambara</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">300</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+        <estParlePar rdf:resource="#Dafing"/>
+    </Langue>
+    
+    <Langue rdf:about="#Biali">
+        <nom>Biali</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1500</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Birifor">
+        <nom>Birifor</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">108000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Birifor"/>
+    </Langue>
+    
+    <Langue rdf:about="#Bomu">
+        <nom>Bomu</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">56000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+        <estParlePar rdf:resource="#Bobo"/>
+    </Langue>
+    
+    <Langue rdf:about="#Bolon">
+        <nom>Bolon</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+        <estParlePar rdf:resource="#Bolon"/>
+    </Langue>
+    
+    <Langue rdf:about="#Bwamu">
+        <nom>Bwamu</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">93210</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Bwamu"/>
+    </Langue>
+    
+    <Langue rdf:about="#Cara">
+        <nom>Cara</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Cerma">
+        <nom>Cerma</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">61000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Cerma"/>
+    </Langue>
+    
+    <Langue rdf:about="#DagaariDioula">
+        <nom>Dagaari dioula</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">246724</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Dagara"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dagara">
+        <nom>Dagara</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">246724</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Dagara"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dogose">
+        <nom>Dogosé</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dogoso">
+        <nom>Dogoso</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dyan">
+        <nom>Dyan</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14100</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Dzuungoo">
+        <nom>Dzùùngoo</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13400</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Gourounsi">
+        <nom>Gourounsi</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40298</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Gurunsi"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kaansa">
+        <nom>Kaansa</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Gan"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kalamse">
+        <nom>Kalamsé</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9568</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kantosi">
+        <nom>Kantosi</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3500</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#KaraboroOccidental">
+        <nom>Karaboro occidental</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">32000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Karaboro"/>
+    </Langue>
+    
+    <Langue rdf:about="#KaraboroOriental">
+        <nom>Karaboro oriental</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">33200</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Karaboro"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kasena">
+        <nom>Kasena</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">120000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Kasena"/>
+    </Langue>
+    
+    <Langue rdf:about="#Khe">
+        <nom>Khe</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1300</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Khe"/>
+    </Langue>
+    
+    <Langue rdf:about="#Khisa">
+        <nom>Khisa</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+        <estParlePar rdf:resource="#Khisa"/>
+    </Langue>
+    
+    <Langue rdf:about="#Koromfe">
+        <nom>Koromfé</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">151000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Koromfe"/>
+    </Langue>
+    
+    <Langue rdf:about="#Koussasse">
+        <nom>Koussassé</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12786</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Kusaal"/>
+    </Langue>
+    
+    <Langue rdf:about="#Kusaal">
+        <nom>Kusaal</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Kusaal"/>
+    </Langue>
+    
+    <Langue rdf:about="#Loma">
+        <nom>Loma</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+    </Langue>
+    
+    <Langue rdf:about="#Lyele">
+        <nom>Lyélé</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">225000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Lyele"/>
+    </Langue>
+    
+    <Langue rdf:about="#Marka">
+        <nom>Marka</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">200000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+        <estParlePar rdf:resource="#Dafing"/>
+    </Langue>
+    
+    <Langue rdf:about="#Malba">
+        <nom>Malba</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Malba"/>
+    </Langue>
+    
+    <Langue rdf:about="#Moba">
+        <nom>Moba</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1800</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Moba"/>
+    </Langue>
+    
+    <Langue rdf:about="#Nankana">
+        <nom>Nankana</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25100</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Nankana"/>
+    </Langue>
+    
+    <Langue rdf:about="#Natioro">
+        <nom>Natioro</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2400</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#WaraNatyoro"/>
+        <estParlePar rdf:resource="#Natioro"/>
+    </Langue>
+    
+    <Langue rdf:about="#Ninkare">
+        <nom>Ninkare</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25100</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Nuni">
+        <nom>Nuni</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">255000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Nuni"/>
+    </Langue>
+    
+    <Langue rdf:about="#Pana">
+        <nom>Pana</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Pana"/>
+    </Langue>
+    
+    <Langue rdf:about="#Phuie">
+        <nom>Phuie</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#San">
+        <nom>San</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">223000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+        <estParlePar rdf:resource="#Samo"/>
+    </Langue>
+    
+    <Langue rdf:about="#Seeku">
+        <nom>Seeku</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Mande"/>
+        <estParlePar rdf:resource="#Seenku"/>
+    </Langue>
+    
+    <Langue rdf:about="#Siamou">
+        <nom>Siamou</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#Siamou"/>
+        <estParlePar rdf:resource="#Siamou"/>
+    </Langue>
+    
+    <Langue rdf:about="#Sikite">
+        <nom>Sikité</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Sininkere">
+        <nom>Sininkéré</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Sissala">
+        <nom>Sissala</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Sissala"/>
+    </Langue>
+    
+    <Langue rdf:about="#Songhai">
+        <nom>Songhaï</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">125000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NiloSaharienne"/>
+        <estParlePar rdf:resource="#Songhai"/>
+    </Langue>
+    
+    <Langue rdf:about="#Tamachek">
+        <nom>Tamachek</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#AfroAsiatique"/>
+        <estParlePar rdf:resource="#Tamachek"/>
+    </Langue>
+    
+    <Langue rdf:about="#Teen">
+        <nom>Téén</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Tiefo">
+        <nom>Tiéfo</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Tiefo"/>
+    </Langue>
+    
+    <Langue rdf:about="#Toussian">
+        <nom>Toussian</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">39000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Toussian"/>
+    </Langue>
+    
+    <Langue rdf:about="#Tourka">
+        <nom>Tourka</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">37000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Turka"/>
+    </Langue>
+    
+    <Langue rdf:about="#Viemo">
+        <nom>Viemo</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Viemo"/>
+    </Langue>
+    
+    <Langue rdf:about="#Wara">
+        <nom>Wara</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4500</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#WaraNatyoro"/>
+        <estParlePar rdf:resource="#Wara"/>
+    </Langue>
+    
+    <Langue rdf:about="#Winen">
+        <nom>Winen</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+    </Langue>
+    
+    <Langue rdf:about="#Winye">
+        <nom>Winyé</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20000</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NigerCongo_Gur"/>
+        <estParlePar rdf:resource="#Winye"/>
+    </Langue>
+    
+    <Langue rdf:about="#Zarma">
+        <nom>Zarma</nom>
+        <nombreLocuteur rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600</nombreLocuteur>
+        <aPourFamilleLinguistique rdf:resource="#NiloSaharienne"/>
+        <estParlePar rdf:resource="#Zarma"/>
+    </Langue>
+
+    <!-- =============================================== -->
+    <!-- FAMILLES LINGUISTIQUES SUPPLÉMENTAIRES        -->
+    <!-- =============================================== -->
+    
+    <FamilleLinguistique rdf:about="#WaraNatyoro">
+        <nom>Wara-Natyoro</nom>
+        <description>Famille linguistique isolée comprenant le Wara et le Natioro</description>
+    </FamilleLinguistique>
+    
+        <FamilleLinguistique rdf:about="#Siamou">
+        <nom>Siamou</nom>
+        <description>Langue isolée sans classification claire</description>
+    </FamilleLinguistique>
+    
+    <!-- =============================================== -->
+    <!-- DIALECTES EXHAUSTIFS PAR LANGUE               -->
+    <!-- =============================================== -->
+    
+    <!-- Dialectes du Mooré -->
+    <Dialecte rdf:about="#MooreOuagadougou">
+        <nom>Mooré de Ouagadougou</nom>
+        <description>Dialecte central du mooré, le plus prestigieux</description>
+        <aPourLangue rdf:resource="#Moore"/>
+        <aPourLocalisation rdf:resource="#Centre"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MooreOuahigouya">
+        <nom>Mooré de Ouahigouya (Yaadre)</nom>
+        <description>Dialecte du mooré parlé dans le nord</description>
+        <aPourLangue rdf:resource="#Moore"/>
+        <aPourLocalisation rdf:resource="#Nord"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MooreKaya">
+        <nom>Mooré de Kaya</nom>
+        <description>Dialecte du mooré de la région centre-nord</description>
+        <aPourLangue rdf:resource="#Moore"/>
+        <aPourLocalisation rdf:resource="#CentreNord"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#MooreKoudougou">
+        <nom>Mooré de Koudougou (Taaolonde)</nom>
+        <description>Dialecte du mooré de l'ouest</description>
+        <aPourLangue rdf:resource="#Moore"/>
+        <aPourLocalisation rdf:resource="#CentreOuest"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Dioula -->
+    <Dialecte rdf:about="#DioulaBobo">
+        <nom>Dioula de Bobo-Dioulasso</nom>
+        <description>Dialecte commercial principal</description>
+        <aPourLangue rdf:resource="#Dioula"/>
+        <aPourLocalisation rdf:resource="#HautsBassins"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#DioulaKong">
+        <nom>Dioula de Kong</nom>
+        <description>Dialecte traditionnel du commerce</description>
+        <aPourLangue rdf:resource="#Dioula"/>
+        <aPourLocalisation rdf:resource="#Cascades"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Fulfuldé -->
+    <Dialecte rdf:about="#FulfuldeDori">
+        <nom>Fulfuldé de Dori</nom>
+        <description>Dialecte peul du Sahel</description>
+        <aPourLangue rdf:resource="#Fulfude"/>
+        <aPourLocalisation rdf:resource="#Sahel"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#FulfuldeDjibo">
+        <nom>Fulfuldé de Djibo</nom>
+        <description>Dialecte peul du nord</description>
+        <aPourLangue rdf:resource="#Fulfude"/>
+        <aPourLocalisation rdf:resource="#Sahel"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Gourmantché -->
+    <Dialecte rdf:about="#GourmantcheNord">
+        <nom>Gourmantché du Nord</nom>
+        <description>Dialecte septentrional</description>
+        <aPourLangue rdf:resource="#Gourmantche"/>
+        <aPourLocalisation rdf:resource="#Est"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#GourmantcheCentre">
+        <nom>Gourmantché central</nom>
+        <description>Dialecte central prestigieux</description>
+        <aPourLangue rdf:resource="#Gourmantche"/>
+        <aPourLocalisation rdf:resource="#Est"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#GourmantcheSud">
+        <nom>Gourmantché du Sud</nom>
+        <description>Dialecte méridional</description>
+        <aPourLangue rdf:resource="#Gourmantche"/>
+        <aPourLocalisation rdf:resource="#Est"/>
+    </Dialecte>
+    
+    <!-- Dialectes du Bissa -->
+    <Dialecte rdf:about="#BissaBoulsa">
+        <nom>Bissa de Boulsa</nom>
+        <description>Dialecte du centre-est</description>
+        <aPourLangue rdf:resource="#Bissa"/>
+        <aPourLocalisation rdf:resource="#CentreEst"/>
+    </Dialecte>
+    
+    <Dialecte rdf:about="#BissaTenkodogo">
+        <nom>Bissa de Tenkodogo</nom>
+        <description>Dialecte principal du bissa</description>
+        <aPourLangue rdf:resource="#Bissa"/>
+        <aPourLocalisation rdf:resource="#CentreEst"/>
+    </Dialecte>
+    
+    <!-- =============================================== -->
+    <!-- COLLECTION EXHAUSTIVE DE PATRONYMES (200+)    -->
+    <!-- =============================================== -->
+    
+    <!-- TOP 50 PATRONYMES LES PLUS FRÉQUENTS -->
+    <Patronyme rdf:about="#Sanou">
+        <nom>Sanou</nom>
+        <signification>Chef de guerre, protecteur</signification>
+        <origine>Patronyme bobo très répandu</origine>
+        <aPourEthnie rdf:resource="#Bobo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Dicko">
+        <nom>Dicko</nom>
+        <signification>Descendant de chef</signification>
+        <origine>Patronyme peul répandu</origine>
+        <aPourEthnie rdf:resource="#Peul"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Savadogo">
+        <nom>Savadogo</nom>
+        <signification>Variante de Sawadogo</signification>
+        <origine>Patronyme mossi alternatif</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Nikiema">
+        <nom>Nikiema</nom>
+        <signification>Celui qui apporte l'eau</signification>
+        <origine>Patronyme mossi du centre</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Some">
+        <nom>Somé</nom>
+        <signification>Né un vendredi</signification>
+        <origine>Patronyme bissa traditionnel</origine>
+        <aPourEthnie rdf:resource="#Bissa"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Ilboudo">
+        <nom>Ilboudo</nom>
+        <signification>Maison de Dieu</signification>
+        <origine>Patronyme mossi religieux</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Ouoba">
+        <nom>Ouoba</nom>
+        <signification>Enfant de la réussite</signification>
+        <origine>Patronyme mossi de prestige</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Konate">
+        <nom>Konaté</nom>
+        <signification>Chasseur, homme fort</signification>
+        <origine>Patronyme mandé/dioula</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Belem">
+        <nom>Bélem</nom>
+        <signification>Bon augure</signification>
+        <origine>Patronyme mossi du centre-ouest</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Maiga">
+        <nom>Maïga</nom>
+        <signification>Chef, dirigeant</signification>
+        <origine>Patronyme songhaï</origine>
+        <aPourEthnie rdf:resource="#Songhai"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Zoungrana">
+        <nom>Zoungrana</nom>
+        <signification>Homme de la montagne</signification>
+        <origine>Patronyme mossi du nord</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sana">
+        <nom>Sana</nom>
+        <signification>Bon, bienveillant</signification>
+        <origine>Patronyme samo/mandé</origine>
+        <aPourEthnie rdf:resource="#Samo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tapsoba">
+        <nom>Tapsoba</nom>
+        <signification>Arbre sacré</signification>
+        <origine>Patronyme mossi traditionnel</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Lankoande">
+        <nom>Lankandé</nom>
+        <signification>Homme de paix</signification>
+        <origine>Patronyme mossi du centre</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tamboura">
+        <nom>Tamboura</nom>
+        <signification>Batteur de tam-tam</signification>
+        <origine>Patronyme lié à la musique traditionnelle</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sore">
+        <nom>Soré</nom>
+        <signification>Homme du matin</signification>
+        <origine>Patronyme mossi de l'est</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Nana">
+        <nom>Nana</nom>
+        <signification>Chef, roi</signification>
+        <origine>Titre royal devenu patronyme</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Hien">
+        <nom>Hien</nom>
+        <signification>Bon, agréable</signification>
+        <origine>Patronyme bissa/gourounsi</origine>
+        <aPourEthnie rdf:resource="#Bissa"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kabre">
+        <nom>Kabré</nom>
+        <signification>Grand homme</signification>
+        <origine>Patronyme mossi de noblesse</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sidibe">
+        <nom>Sidibé</nom>
+        <signification>Descendant de Sidi</signification>
+        <origine>Patronyme peul/mandé</origine>
+        <aPourEthnie rdf:resource="#Peul"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kafando">
+        <nom>Kafando</nom>
+        <signification>Homme de guerre</signification>
+        <origine>Patronyme mossi militaire</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Bamogo">
+        <nom>Bamogo</nom>
+        <signification>Crocodile, force</signification>
+        <origine>Patronyme mossi totémique</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Dao">
+        <nom>Dao</nom>
+        <signification>Couteau, tranchant</signification>
+        <origine>Patronyme bissa/gourounsi</origine>
+        <aPourEthnie rdf:resource="#Bissa"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tindano">
+        <nom>Tindano</nom>
+        <signification>Maître de la terre</signification>
+        <origine>Titre spirituel devenu patronyme</origine>
+        <aPourEthnie rdf:resource="#Dagara"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Dabire">
+        <nom>Dabiré</nom>
+        <signification>Homme de bien</signification>
+        <origine>Patronyme bissa répandu</origine>
+        <aPourEthnie rdf:resource="#Bissa"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kindo">
+        <nom>Kindo</nom>
+        <signification>Brave, courageux</signification>
+        <origine>Patronyme gurunsi</origine>
+        <aPourEthnie rdf:resource="#Gurunsi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tankoano">
+        <nom>Tankoano</nom>
+        <signification>Homme du champ</signification>
+        <origine>Patronyme mossi agricole</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sonde">
+        <nom>Sondé</nom>
+        <signification>Homme de la brousse</signification>
+        <origine>Patronyme mossi rural</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kambou">
+        <nom>Kambou</nom>
+        <signification>Puissant, fort</signification>
+        <origine>Patronyme lobi/dagara</origine>
+        <aPourEthnie rdf:resource="#Lobi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tall">
+        <nom>Tall</nom>
+        <signification>Grand, élevé</signification>
+        <origine>Patronyme peul répandu</origine>
+        <aPourEthnie rdf:resource="#Peul"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Cisse">
+        <nom>Cissé</nom>
+        <signification>Cavalier, noble</signification>
+        <origine>Patronyme mandé/dioula</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kone">
+        <nom>Koné</nom>
+        <signification>Oiseau, messager</signification>
+        <origine>Patronyme mandé très répandu</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Bande">
+        <nom>Bandé</nom>
+        <signification>Frère, compagnon</signification>
+        <origine>Patronyme mossi de confraternité</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Bonkoungou">
+        <nom>Bonkoungou</nom>
+        <signification>Enfant béni</signification>
+        <origine>Patronyme mossi de bénédiction</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Koanda">
+        <nom>Koanda</nom>
+        <signification>Noble descendance</signification>
+        <origine>Patronyme mossi royal</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sanfo">
+        <nom>Sanfo</nom>
+        <signification>Homme pur</signification>
+        <origine>Patronyme sénoufo</origine>
+        <aPourEthnie rdf:resource="#Senufo"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Drabo">
+        <nom>Drabo</nom>
+        <signification>Chasseur</signification>
+        <origine>Patronyme mandé de chasseur</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Somda">
+        <nom>Somda</nom>
+        <signification>Né en temps de paix</signification>
+        <origine>Patronyme mossi pacifique</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kinda">
+        <nom>Kinda</nom>
+        <signification>Homme libre</signification>
+        <origine>Patronyme gourounsi</origine>
+        <aPourEthnie rdf:resource="#Gurunsi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Yonli">
+        <nom>Yonli</nom>
+        <signification>Sagesse, intelligence</signification>
+        <origine>Patronyme mossi du savoir</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Millogo">
+        <nom>Millogo</nom>
+        <signification>Homme du mil</signification>
+        <origine>Patronyme mossi agricole</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Thiombiano">
+        <nom>Thiombiano</nom>
+        <signification>Dieu nous protège</signification>
+        <origine>Patronyme mossi religieux</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Barro">
+        <nom>Barro</nom>
+        <signification>Argile, terre</signification>
+        <origine>Patronyme peul de la terre</origine>
+        <aPourEthnie rdf:resource="#Peul"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Nebie">
+        <nom>Nébie</nom>
+        <signification>Bon, généreux</signification>
+        <origine>Patronyme mossi de bonté</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Dembele">
+        <nom>Dembélé</nom>
+        <signification>Qui aide les autres</signification>
+        <origine>Patronyme mandé d'entraide</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Porgo">
+        <nom>Porgo</nom>
+        <signification>Maison royale</signification>
+        <origine>Patronyme gourmantché royal</origine>
+        <aPourEthnie rdf:resource="#Gourmantche"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Simpore">
+        <nom>Simporé</nom>
+        <signification>Homme de paix</signification>
+        <origine>Patronyme mossi pacifique</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Zerbo">
+        <nom>Zerbo</nom>
+        <signification>Or, richesse</signification>
+        <origine>Patronyme dioula de richesse</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sebgo">
+        <nom>Sebgo</nom>
+        <signification>Brave guerrier</signification>
+        <origine>Patronyme mossi militaire</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Ouali">
+        <nom>Ouali</nom>
+        <signification>Saint, pieux</signification>
+        <origine>Patronyme arabe adopté</origine>
+        <aPourEthnie rdf:resource="#Hausa"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Congo">
+        <nom>Congo</nom>
+        <signification>Rassembleur</signification>
+        <origine>Patronyme mossi de leadership</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Zida">
+        <nom>Zida</nom>
+        <signification>Racine, origine</signification>
+        <origine>Patronyme mossi ancestral</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <!-- PATRONYMES ADDITIONNELS POUR COMPLETER LA COLLECTION -->
+    <Patronyme rdf:about="#Kiendrebeogo">
+        <nom>Kiendrebeogo</nom>
+        <signification>Dieu protège sa maison</signification>
+        <origine>Patronyme mossi spirituel</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Ganame">
+        <nom>Ganame</nom>
+        <signification>Chef de clan</signification>
+        <origine>Patronyme mossi de leadership</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Bouda">
+        <nom>Bouda</nom>
+        <signification>Maison forte</signification>
+        <origine>Patronyme mossi de protection</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Badini">
+        <nom>Badini</nom>
+        <signification>Bon guide</signification>
+        <origine>Patronyme mossi de guidance</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Bado">
+        <nom>Bado</nom>
+        <signification>Grand frère</signification>
+        <origine>Patronyme mossi familial</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sanogo">
+        <nom>Sanogo</nom>
+        <signification>Marchand prospère</signification>
+        <origine>Patronyme mandé commercial</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Tiemtore">
+        <nom>Tiemtoré</nom>
+        <signification>Arbre de paix</signification>
+        <origine>Patronyme mossi de réconciliation</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Sangare">
+        <nom>Sangaré</nom>
+        <signification>Lion blanc</signification>
+        <origine>Patronyme mandé de courage</origine>
+        <aPourEthnie rdf:resource="#Dafing"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kambire">
+        <nom>Kambiré</nom>
+        <signification>Homme de fer</signification>
+        <origine>Patronyme mossi de force</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Zabre">
+        <nom>Zabré</nom>
+        <signification>Brave cavalier</signification>
+        <origine>Patronyme mossi équestre</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Dah">
+        <nom>Dah</nom>
+        <signification>Roi, chef</signification>
+        <origine>Titre royal gourmantché</origine>
+        <aPourEthnie rdf:resource="#Gourmantche"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Diande">
+        <nom>Diandé</nom>
+        <signification>Homme de confiance</signification>
+        <origine>Patronyme peul de loyauté</origine>
+        <aPourEthnie rdf:resource="#Peul"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Rouamba">
+        <nom>Rouamba</nom>
+        <signification>Fils du forgeron</signification>
+        <origine>Patronyme mossi artisanal</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Kouraogo">
+        <nom>Kouraogo</nom>
+        <signification>Maison de l'ancêtre</signification>
+        <origine>Patronyme mossi ancestral</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+    
+    <Patronyme rdf:about="#Zalle">
+        <nom>Zallé</nom>
+        <signification>Homme bon</signification>
+        <origine>Patronyme mossi de bonté</origine>
+        <aPourEthnie rdf:resource="#Mossi"/>
+    </Patronyme>
+
+</rdf:RDF>

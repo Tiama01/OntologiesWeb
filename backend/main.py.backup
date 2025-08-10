@@ -1,0 +1,532 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+🇧🇫 API BACKEND - ONTOLOGIE BURKINA FASO - DONNÉES COMPLÈTES
+"""
+
+from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from typing import Dict, List, Any, Optional
+from pydantic import BaseModel, Field
+from datetime import datetime
+from rdflib import Graph, Namespace
+from rdflib.namespace import RDF, RDFS
+
+# ====================================
+# MODELS PYDANTIC AVEC DOCUMENTATION
+# ====================================
+
+class EthnieComplete(BaseModel):
+    """Modèle complet d'une ethnie du Burkina Faso."""
+    nom: str = Field(..., description="Nom de l'ethnie", example="Mossi")
+    synonyme: Optional[str] = Field(None, description="Autres noms ou variantes", example="Moosé, Moaga")
+    description: Optional[str] = Field(None, description="Description détaillée de l'ethnie")
+    tradition: Optional[str] = Field(None, description="Traditions et coutumes principales")
+    population_estimee: Optional[int] = Field(None, description="Population estimée", example=12600000)
+    pourcentage_national: Optional[float] = Field(None, description="Pourcentage de la population nationale", example=53.7)
+    statut_national: Optional[str] = Field(None, description="Statut (MAJORITAIRE/MINORITAIRE)", example="MAJORITAIRE")
+
+class LangueComplete(BaseModel):
+    """Modèle complet d'une langue du Burkina Faso."""
+    nom: str = Field(..., description="Nom de la langue", example="Mooré")
+    description: Optional[str] = Field(None, description="Description de la langue")
+    nombre_locuteurs: Optional[int] = Field(None, description="Nombre de locuteurs", example=12600000)
+    famille_linguistique: Optional[str] = Field(None, description="Famille linguistique", example="Niger-Congo (Gur/Voltaïque)")
+
+class PatronymeComplete(BaseModel):
+    """Modèle complet d'un patronyme burkinabé."""
+    nom: str = Field(..., description="Nom de famille", example="Ouedraogo")
+    signification: Optional[str] = Field(None, description="Signification du patronyme", example="Venez donc!")
+    origine: Optional[str] = Field(None, description="Origine géographique ou culturelle")
+    ethnie: Optional[str] = Field(None, description="Ethnie associée", example="Mossi")
+
+class LocaliteComplete(BaseModel):
+    """Modèle complet d'une localité/région du Burkina Faso."""
+    nom: str = Field(..., description="Nom de la localité", example="Centre")
+    description: Optional[str] = Field(None, description="Description de la région")
+    latitude: Optional[float] = Field(None, description="Latitude GPS", example=12.3714)
+    longitude: Optional[float] = Field(None, description="Longitude GPS", example=-1.5197)
+
+class StatsCompletes(BaseModel):
+    """Statistiques complètes de l'ontologie."""
+    total_ethnies: int = Field(..., description="Nombre total d'ethnies", example=65)
+    total_langues: int = Field(..., description="Nombre total de langues", example=16)
+    total_patronymes: int = Field(..., description="Nombre total de patronymes", example=200)
+    total_localites: int = Field(..., description="Nombre total de localités", example=13)
+    population_totale_estimee: int = Field(..., description="Population totale estimée", example=22000000)
+
+class HealthResponse(BaseModel):
+    """Réponse de santé de l'API."""
+    status: str = Field(..., description="Statut de l'API", example="healthy")
+    timestamp: str = Field(..., description="Timestamp ISO", example="2024-12-30T00:00:00.000000")
+    ontology_loaded: bool = Field(..., description="Ontologie chargée", example=True)
+    total_triples: int = Field(..., description="Nombre de triples RDF", example=3124)
+
+# ====================================
+# APPLICATION FASTAPI AVEC DOCUMENTATION
+# ====================================
+
+app = FastAPI(
+    title="🇧🇫 API Ontologie Burkina Faso",
+    description="""
+    ## API REST complète pour l'ontologie ethnolinguistique du Burkina Faso
+    
+    Cette API permet d'accéder à toutes les données de l'ontologie OWL comprenant :
+    
+    - **Ethnies** : 65+ groupes ethniques avec populations, traditions, statuts
+    - **Langues** : 16+ langues avec familles linguistiques et nombres de locuteurs  
+    - **Patronymes** : 200+ noms de famille avec significations et origines
+    - **Localités** : 13 régions administratives avec coordonnées GPS
+    
+    ### Sources académiques
+    - Institut National de la Statistique et de la Démographie (INSD)
+    - Organisation Internationale de la Francophonie (OIF)
+    - UNESCO Atlas des langues en danger
+    - Recherches ethnographiques spécialisées
+    
+    ### Technologies
+    - **Backend** : FastAPI + RDFLib + SPARQL
+    - **Ontologie** : OWL 2.0 avec 3100+ triples RDF
+    - **Données** : Extraction automatique en temps réel
+    """,
+    version="3.0.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_tags=[
+        {
+            "name": "santé",
+            "description": "Vérification du statut de l'API et de l'ontologie"
+        },
+        {
+            "name": "ethnies", 
+            "description": "Données complètes sur les ethnies du Burkina Faso"
+        },
+        {
+            "name": "langues",
+            "description": "Informations sur les langues et familles linguistiques"
+        },
+        {
+            "name": "patronymes",
+            "description": "Noms de famille avec significations culturelles"
+        },
+        {
+            "name": "géographie",
+            "description": "Régions et localités géographiques"
+        },
+        {
+            "name": "dashboard",
+            "description": "Vue d'ensemble avec toutes les données agrégées"
+        }
+    ]
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Variables globales
+graph: Optional[Graph] = None
+ONT = Namespace("http://www.semanticweb.org/ontologie/burkina-faso#")
+
+@app.on_event("startup")
+async def startup_event():
+    global graph
+    try:
+        print("🚀 Démarrage API...")
+        graph = Graph()
+        graph.bind("ont", ONT)
+        graph.parse("ontologie_burkina_faso.owl", format="xml")
+        print(f"✅ Ontologie chargée: {len(graph)} triples")
+    except Exception as e:
+        print(f"❌ Erreur: {e}")
+        graph = Graph()
+
+def execute_sparql_query(query: str) -> List[Dict]:
+    if not graph:
+        return []
+    try:
+        results = graph.query(query)
+        return [dict(row.asdict()) for row in results]
+    except Exception as e:
+        print(f"Erreur SPARQL: {e}")
+        return []
+
+def get_all_ethnies_data():
+    query = """
+    PREFIX ont: <http://www.semanticweb.org/ontologie/burkina-faso#>
+    SELECT ?ethnie ?nom ?synonyme ?description ?tradition ?population ?pourcentage ?statut WHERE {
+        ?ethnie a ont:Ethnie .
+        ?ethnie ont:nom ?nom .
+        OPTIONAL { ?ethnie ont:synonyme ?synonyme }
+        OPTIONAL { ?ethnie ont:description ?description }
+        OPTIONAL { ?ethnie ont:tradition ?tradition }
+        OPTIONAL { ?ethnie ont:populationEstimee ?population }
+        OPTIONAL { ?ethnie ont:pourcentageNational ?pourcentage }
+        OPTIONAL { ?ethnie ont:statutNational ?statut }
+    }
+    ORDER BY DESC(?population)
+    """
+    
+    results = execute_sparql_query(query)
+    ethnies = []
+    
+    for row in results:
+        ethnie_data = {
+            "nom": str(row.get("nom", "")),
+            "synonyme": str(row.get("synonyme", "")) if row.get("synonyme") else None,
+            "description": str(row.get("description", "")) if row.get("description") else None,
+            "tradition": str(row.get("tradition", "")) if row.get("tradition") else None,
+            "population_estimee": int(row.get("population")) if row.get("population") else None,
+            "pourcentage_national": float(row.get("pourcentage")) if row.get("pourcentage") else None,
+            "statut_national": str(row.get("statut", "")).split("#")[-1] if row.get("statut") else None,
+        }
+        ethnies.append(ethnie_data)
+    
+    return ethnies
+
+def get_all_langues_data():
+    query = """
+    PREFIX ont: <http://www.semanticweb.org/ontologie/burkina-faso#>
+    SELECT ?langue ?nom ?description ?locuteurs ?famille_nom WHERE {
+        ?langue a ont:Langue .
+        ?langue ont:nom ?nom .
+        OPTIONAL { ?langue ont:description ?description }
+        OPTIONAL { ?langue ont:nombreLocuteur ?locuteurs }
+        OPTIONAL { 
+            ?langue ont:aPourFamilleLinguistique ?famille .
+            ?famille ont:nom ?famille_nom 
+        }
+    }
+    ORDER BY DESC(?locuteurs)
+    """
+    
+    results = execute_sparql_query(query)
+    langues = []
+    
+    for row in results:
+        langue_data = {
+            "nom": str(row.get("nom", "")),
+            "description": str(row.get("description", "")) if row.get("description") else None,
+            "nombre_locuteurs": int(row.get("locuteurs")) if row.get("locuteurs") else None,
+            "famille_linguistique": str(row.get("famille_nom", "")) if row.get("famille_nom") else None,
+        }
+        langues.append(langue_data)
+    
+    return langues
+
+def get_all_patronymes_data():
+    query = """
+    PREFIX ont: <http://www.semanticweb.org/ontologie/burkina-faso#>
+    SELECT ?patronyme ?nom ?signification ?origine ?ethnie_nom WHERE {
+        ?patronyme a ont:Patronyme .
+        ?patronyme ont:nom ?nom .
+        OPTIONAL { ?patronyme ont:signification ?signification }
+        OPTIONAL { ?patronyme ont:origine ?origine }
+        OPTIONAL { 
+            ?patronyme ont:aPourEthnie ?ethnie .
+            ?ethnie ont:nom ?ethnie_nom 
+        }
+    }
+    ORDER BY ?nom
+    """
+    
+    results = execute_sparql_query(query)
+    patronymes = []
+    
+    for row in results:
+        patronyme_data = {
+            "nom": str(row.get("nom", "")),
+            "signification": str(row.get("signification", "")) if row.get("signification") else None,
+            "origine": str(row.get("origine", "")) if row.get("origine") else None,
+            "ethnie": str(row.get("ethnie_nom", "")) if row.get("ethnie_nom") else None,
+        }
+        patronymes.append(patronyme_data)
+    
+    return patronymes
+
+def get_all_localites_data():
+    query = """
+    PREFIX ont: <http://www.semanticweb.org/ontologie/burkina-faso#>
+    SELECT ?localite ?nom ?description ?latitude ?longitude WHERE {
+        ?localite a ont:Localite .
+        ?localite ont:nom ?nom .
+        OPTIONAL { ?localite ont:description ?description }
+        OPTIONAL { ?localite ont:latitude ?latitude }
+        OPTIONAL { ?localite ont:longitude ?longitude }
+    }
+    ORDER BY ?nom
+    """
+    
+    results = execute_sparql_query(query)
+    localites = []
+    
+    for row in results:
+        localite_data = {
+            "nom": str(row.get("nom", "")),
+            "description": str(row.get("description", "")) if row.get("description") else None,
+            "latitude": float(row.get("latitude")) if row.get("latitude") else None,
+            "longitude": float(row.get("longitude")) if row.get("longitude") else None,
+        }
+        localites.append(localite_data)
+    
+    return localites
+
+# ====================================
+# ENDPOINTS AVEC DOCUMENTATION COMPLÈTE
+# ====================================
+
+@app.get(
+    "/api/health",
+    response_model=HealthResponse,
+    tags=["santé"],
+    summary="🏥 Santé de l'API",
+    description="""
+    Vérification du statut de l'API et du chargement de l'ontologie.
+    
+    Retourne des informations sur :
+    - Le statut général de l'API
+    - Si l'ontologie OWL est correctement chargée
+    - Le nombre de triples RDF disponibles
+    - Un timestamp de la vérification
+    """,
+    responses={
+        200: {
+            "description": "API fonctionnelle",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "status": "healthy",
+                        "timestamp": "2024-12-30T00:00:00.000000",
+                        "ontology_loaded": True,
+                        "total_triples": 3124
+                    }
+                }
+            }
+        }
+    }
+)
+async def health_check():
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "ontology_loaded": graph is not None,
+        "total_triples": len(graph) if graph else 0
+    }
+
+@app.get(
+    "/api/ethnies",
+    tags=["ethnies"],
+    summary="🏛️ Toutes les ethnies",
+    description="""
+    Récupère la liste complète des ethnies du Burkina Faso avec leurs données détaillées.
+    
+    **Données incluses :**
+    - Nom principal et synonymes/variantes
+    - Description et traditions culturelles  
+    - Population estimée et pourcentage national
+    - Statut (majoritaire/minoritaire)
+    
+    **Sources :** INSD, recherches ethnographiques spécialisées
+    """,
+    responses={
+        200: {
+            "description": "Liste des ethnies récupérée avec succès",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "ethnies": [
+                            {
+                                "nom": "Mossi",
+                                "synonyme": "Moosé, Moaga, Moose",
+                                "description": "Ethnie majoritaire du Burkina Faso...",
+                                "tradition": "Royaume traditionnel avec hiérarchie nobles-roturiers...",
+                                "population_estimee": 12600000,
+                                "pourcentage_national": 53.7,
+                                "statut_national": "MAJORITAIRE"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        503: {"description": "Ontologie non chargée"}
+    }
+)
+async def get_all_ethnies():
+    if not graph:
+        raise HTTPException(status_code=503, detail="Ontologie non chargée")
+    try:
+        return {"ethnies": get_all_ethnies_data()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+
+@app.get(
+    "/api/langues",
+    tags=["langues"],
+    summary="🗣️ Toutes les langues",
+    description="""
+    Récupère la liste complète des langues parlées au Burkina Faso.
+    
+    **Données incluses :**
+    - Nom de la langue et description
+    - Nombre de locuteurs (sources INSD/OIF)
+    - Famille linguistique d'appartenance
+    - Classification selon UNESCO
+    
+    **Familles principales :** Niger-Congo (Gur), Niger-Congo (Mandé), Afro-asiatique, Nilo-Saharienne
+    """,
+    responses={
+        200: {
+            "description": "Liste des langues récupérée avec succès"
+        }
+    }
+)
+async def get_all_langues():
+    if not graph:
+        raise HTTPException(status_code=503, detail="Ontologie non chargée")
+    try:
+        return {"langues": get_all_langues_data()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+
+@app.get(
+    "/api/patronymes",
+    tags=["patronymes"],
+    summary="👥 Tous les patronymes",
+    description="""
+    Récupère la liste complète des patronymes (noms de famille) burkinabés.
+    
+    **Données incluses :**
+    - Nom de famille complet
+    - Signification culturelle et linguistique
+    - Origine géographique ou ethnique
+    - Ethnie principalement associée
+    
+    **Note :** Les patronymes reflètent l'histoire, les valeurs et les traditions des peuples du Burkina Faso.
+    """,
+    responses={
+        200: {
+            "description": "Liste des patronymes récupérée avec succès"
+        }
+    }
+)
+async def get_all_patronymes():
+    if not graph:
+        raise HTTPException(status_code=503, detail="Ontologie non chargée")
+    try:
+        return {"patronymes": get_all_patronymes_data()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+
+@app.get(
+    "/api/localites",
+    tags=["géographie"],
+    summary="🗺️ Toutes les localités",
+    description="""
+    Récupère la liste des régions administratives et localités géographiques du Burkina Faso.
+    
+    **Données incluses :**
+    - Nom de la région/localité
+    - Description géographique et administrative
+    - Coordonnées GPS (latitude/longitude)
+    - Ethnies majoritaires présentes
+    
+    **Couverture :** 13 régions administratives officielles
+    """,
+    responses={
+        200: {
+            "description": "Liste des localités récupérée avec succès"
+        }
+    }
+)
+async def get_all_localites():
+    if not graph:
+        raise HTTPException(status_code=503, detail="Ontologie non chargée")
+    try:
+        return {"localites": get_all_localites_data()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+
+@app.get(
+    "/api/dashboard",
+    tags=["dashboard"],
+    summary="📊 Dashboard complet",
+    description="""
+    Vue d'ensemble complète avec toutes les données de l'ontologie agrégées.
+    
+    **Contenu :**
+    - Statistiques générales (totaux, populations)
+    - Toutes les données détaillées (ethnies, langues, patronymes, localités)
+    - Calculs automatiques (populations totales, nombres de locuteurs)
+    - Prêt pour visualisation (graphiques, cartes, tableaux)
+    
+    **Usage :** Endpoint principal pour interfaces utilisateur et dashboards.
+    """,
+    responses={
+        200: {
+            "description": "Dashboard complet généré avec succès",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "stats": {
+                            "total_ethnies": 65,
+                            "total_langues": 16,
+                            "total_patronymes": 200,
+                            "total_localites": 13,
+                            "population_totale_estimee": 22000000,
+                            "nombre_total_locuteurs": 18000000
+                        },
+                        "toutes_donnees": {
+                            "ethnies": "...",
+                            "langues": "...",
+                            "patronymes": "...",
+                            "localites": "..."
+                        }
+                    }
+                }
+            }
+        }
+    }
+)
+async def get_complete_dashboard():
+    if not graph:
+        raise HTTPException(status_code=503, detail="Ontologie non chargée")
+    
+    try:
+        ethnies = get_all_ethnies_data()
+        langues = get_all_langues_data()
+        patronymes = get_all_patronymes_data()
+        localites = get_all_localites_data()
+        
+        total_population = sum(e.get("population_estimee", 0) for e in ethnies if e.get("population_estimee"))
+        total_locuteurs = sum(l.get("nombre_locuteurs", 0) for l in langues if l.get("nombre_locuteurs"))
+        
+        return {
+            "stats": {
+                "total_ethnies": len(ethnies),
+                "total_langues": len(langues),
+                "total_patronymes": len(patronymes),
+                "total_localites": len(localites),
+                "population_totale_estimee": total_population,
+                "nombre_total_locuteurs": total_locuteurs
+            },
+            "toutes_donnees": {
+                "ethnies": ethnies,
+                "langues": langues,
+                "patronymes": patronymes,
+                "localites": localites
+            }
+        }
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Erreur dashboard: {str(e)}")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

@@ -1,0 +1,300 @@
+import React, { useState, useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
+import { motion } from 'framer-motion';
+import { 
+  Users, 
+  MessageSquare, 
+  TreePine, 
+  MapPin, 
+  TrendingUp,
+  Globe,
+  BarChart3,
+  Activity,
+  Crown,
+  Eye,
+  EyeOff
+} from 'lucide-react';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
+import { formatNumber } from './utils/format';
+import Header from './components/layout/Header';
+import Sidebar from './components/layout/Sidebar';
+import LoadingSpinner from './components/ui/LoadingSpinner';
+import EthniesPage from './components/pages/EthniesPage';
+import LanguesPage from './components/pages/LanguesPage';
+import RegionsPage from './components/pages/RegionsPage';
+import PatronymesPage from './components/pages/PatronymesPage';
+import DialectesPage from './components/pages/DialectesPage';
+import ChartWidget from './components/charts/ChartWidget';
+
+// Configuration React Query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+// Service API simplifié pour le dashboard
+const testApiConnection = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/dashboard', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(15000), // 15 secondes pour les gros datasets
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error) {
+    console.error('❌ Erreur API:', error);
+    return { success: false, error: error.message || 'Erreur backend' };
+  }
+};
+
+// Hook pour dashboard
+const useDashboardDataSimple = () => {
+  const [state, setState] = useState({
+    data: null,
+    isLoading: true,
+    error: null,
+    apiConnected: false
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadData = async () => {
+      try {
+        const result = await testApiConnection();
+        
+        if (!isMounted) return;
+
+        if (result.success) {
+          setState({
+            data: result.data,
+            isLoading: false,
+            error: null,
+            apiConnected: true
+          });
+        } else {
+          setState({
+            data: {
+              stats: {
+                total_ethnies: 67,
+                total_langues: 72,
+                total_familles_linguistiques: 4,
+                nombre_total_locuteurs: 25984068
+              }
+            },
+            isLoading: false,
+            error: result.error,
+            apiConnected: false
+          });
+        }
+      } catch (error) {
+        if (!isMounted) return;
+        
+        setState({
+          data: {
+            stats: {
+              total_ethnies: 67,
+              total_langues: 72,
+              total_familles_linguistiques: 4,
+              nombre_total_locuteurs: 25984068
+            }
+          },
+          isLoading: false,
+          error: error.message,
+          apiConnected: false
+        });
+      }
+    };
+
+    loadData();
+    return () => { isMounted = false; };
+  }, []);
+
+  return state;
+};
+
+// Dashboard simplifié
+const DashboardEnhanced = () => {
+  const { data: dashboardData, isLoading, error, apiConnected } = useDashboardDataSimple();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <LoadingSpinner size="lg" text="Chargement du tableau de bord..." />
+      </div>
+    );
+  }
+
+  const stats = dashboardData?.stats || {};
+
+  return (
+    <div className="space-y-6 p-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+          Tableau de bord - Ontologie Burkina Faso
+        </h1>
+        <p className={`mt-1 ${apiConnected ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400'}`}>
+          {apiConnected 
+            ? '✅ Connecté aux données réelles' 
+            : '⚠️ Mode démonstration'
+          }
+        </p>
+      </div>
+
+      {/* Cartes de statistiques */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { title: 'Ethnies recensées', value: stats.total_ethnies || 67, icon: '👥' },
+          { title: 'Langues vivantes', value: stats.total_langues || 72, icon: '🗣️' },
+          { title: 'Régions couvertes', value: 17, icon: '🗺️' },
+          { title: 'Locuteurs totaux', value: stats.nombre_total_locuteurs || 25984068, icon: '🌍', format: 'number' }
+        ].map((card, index) => (
+          <motion.div
+            key={card.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className={`bg-white dark:bg-dark-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-dark-700 hover:shadow-xl transition-all duration-300`}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">{card.title}</h3>
+                <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+                  {card.format === 'number' && card.value > 1000000 
+                    ? `${(card.value / 1000000).toFixed(1)}M`
+                    : card.value.toLocaleString()
+                  }
+                </p>
+              </div>
+              <div className="text-4xl">{card.icon}</div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Message de transition vers les pages CRUD */}
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+        <h3 className="text-blue-800 dark:text-blue-200 font-medium mb-3">
+          🚀 Nouvelles fonctionnalités disponibles !
+        </h3>
+        <p className="text-blue-700 dark:text-blue-300 text-sm mb-4">
+          Vous pouvez maintenant gérer les ethnies et langues directement depuis l'interface.
+        </p>
+        <div className="flex space-x-3">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+            Gérer les Ethnies
+          </button>
+          <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+            Gérer les Langues
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// App principal avec routage
+function App() {
+  const [currentPage, setCurrentPage] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // Gestion du thème
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+    }
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  const handleNavigation = (page: string) => {
+    setCurrentPage(page);
+    setSidebarOpen(false);
+  };
+
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return <DashboardEnhanced />;
+      case 'ethnies':
+        return <EthniesPage />;
+      case 'langues':
+        return <LanguesPage />;
+      case 'regions':
+        return <RegionsPage />;
+      case 'patronymes':
+        return <PatronymesPage />;
+      case 'dialectes':
+        return <DialectesPage />;
+      default:
+        return <DashboardEnhanced />;
+    }
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <div className={`min-h-screen bg-gray-50 dark:bg-dark-900 transition-colors duration-300 ${theme}`}>
+        <div className="flex h-screen overflow-hidden">
+          <Sidebar
+            isOpen={sidebarOpen}
+            currentPage={currentPage}
+            onNavigate={handleNavigation}
+          />
+
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <Header
+              onToggleSidebar={toggleSidebar}
+              theme={theme}
+              onToggleTheme={toggleTheme}
+            />
+
+            <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-dark-900">
+              <div className="max-w-7xl mx-auto">
+                {renderCurrentPage()}
+              </div>
+            </main>
+          </div>
+        </div>
+
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: theme === 'dark' ? '#1f2937' : '#ffffff',
+              color: theme === 'dark' ? '#f9fafb' : '#111827',
+              border: theme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb',
+              borderRadius: '12px',
+              padding: '16px',
+              fontSize: '14px',
+              fontWeight: '500',
+            },
+          }}
+        />
+      </div>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
